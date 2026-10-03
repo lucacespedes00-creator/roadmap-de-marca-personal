@@ -121,7 +121,7 @@ export const CleansEditorPage: React.FC<CleansEditorPageProps> = ({ page, update
   const renderBlock = (block: CleanBlock) => {
     const isEditing = editingBlockId === block.id;
 
-    const Wrapper = ({ children }: { children: React.ReactNode }) => (
+    const Wrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
       <div className="relative group my-4">
         {children}
         <button

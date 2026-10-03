@@ -152,7 +152,7 @@ export const TesisOutboundMdrSdrPage = ({ setActivePageId }: { setActivePageId: 
         </div>
 
         {/* Text Content Area */}
-        <div className={`flex-1 min-w-0 w-full ${isVideoPinned ? 'order-1' : 'order-2'}`}>
+        <div className={`flex-1 min-w-0 w-full ${videoMode === 'side' ? 'order-1' : 'order-2'}`}>
 
       {/* Introducción BDRs */}
       <div className="border border-[#4A3B18]/60 bg-[#2A2110]/30 rounded-3xl p-8 mb-16 shadow-2xl relative overflow-hidden">

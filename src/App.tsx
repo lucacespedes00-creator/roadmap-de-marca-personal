@@ -12,6 +12,7 @@ import { TesisScaleMetaAdsPage } from './TesisScaleMetaAdsPage';
 import { ModelIf100kPage } from './ModelIf100kPage';
 import { Sales16MPage } from './Sales16MPage';
 import { SalesShowRatePage } from './SalesShowRatePage';
+import { SalesShowRateCoursePage } from './SalesShowRateCoursePage';
 import { CleansEditorPage } from './CleansEditorPage';
 import { 
   Home, Maximize2, ArrowLeftRight, SlidersHorizontal, LayoutGrid, Database, 
@@ -34,7 +35,7 @@ const ArcadiaLogo = ({ className = "w-4 h-4" }) => (
 type Page = {
   id: string;
   title: string;
-  type: 'default_plan' | 'default_etapa' | 'default_contenido' | 'default_linkedin_ideas' | 'default_linkedin_content' | 'default_linkedin_parent' | 'default_linkedin_angulos' | 'default_linkedin_acquisition_parent' | 'default_linkedin_vistas' | 'default_linkedin_outbound' | 'default_linkedin_insight_parent' | 'default_linkedin_insight_summary' | 'default_linkedin_insight_gtm' | 'default_linkedin_email' | 'default_marketing_parent' | 'default_marketing_asimilacion' | 'default_tesis_acquisition' | 'default_tesis_outbound_mdr_sdr' | 'default_tesis_jeremy_ads' | 'default_tesis_keep_ads_profitable' | 'default_tesis_pixel_conditioning' | 'default_tesis_3cs' | 'default_tesis_trent_consulting' | 'default_tesis_scale_meta_ads' | 'default_ads_parent' | 'default_model_parent' | 'default_model_if100k' | 'default_sales_parent' | 'default_sales_16m' | 'default_sales_showrate' | 'custom' | 'clean';
+  type: 'default_plan' | 'default_etapa' | 'default_contenido' | 'default_linkedin_ideas' | 'default_linkedin_content' | 'default_linkedin_parent' | 'default_linkedin_angulos' | 'default_linkedin_acquisition_parent' | 'default_linkedin_vistas' | 'default_linkedin_outbound' | 'default_linkedin_insight_parent' | 'default_linkedin_insight_summary' | 'default_linkedin_insight_gtm' | 'default_linkedin_email' | 'default_marketing_parent' | 'default_marketing_asimilacion' | 'default_tesis_acquisition' | 'default_tesis_outbound_mdr_sdr' | 'default_tesis_jeremy_ads' | 'default_tesis_keep_ads_profitable' | 'default_tesis_pixel_conditioning' | 'default_tesis_3cs' | 'default_tesis_trent_consulting' | 'default_tesis_scale_meta_ads' | 'default_ads_parent' | 'default_model_parent' | 'default_model_if100k' | 'default_sales_parent' | 'default_sales_16m' | 'default_sales_showrate' | 'default_sales_showrate_course' | 'custom' | 'clean';
   content?: string;
   parentId?: string;
   section?: 'tesis' | 'aprendizajes' | 'cleans';
@@ -56,6 +57,7 @@ const defaultPages: Page[] = [
   { id: 'sales_parent', title: 'Sales', type: 'default_sales_parent', section: 'aprendizajes' },
   { id: 'sales_16m', title: '$16.000.000 en conocimiento de ventas en 36 minutos', type: 'default_sales_16m', parentId: 'sales_parent', section: 'aprendizajes' },
   { id: 'sales_showrate', title: 'Cómo arreglar tu show rate: resumen completo', type: 'default_sales_showrate', parentId: 'sales_parent', section: 'aprendizajes' },
+  { id: 'sales_showrate_course', title: 'Show Rate Course', type: 'default_sales_showrate_course', parentId: 'sales_parent', section: 'aprendizajes' },
 ];
 
 const AreaItem = ({ icon: Icon, title, desc, active, onClick }: any) => (
@@ -405,7 +407,7 @@ const LinkedInInsightSummaryPage = ({ setActivePageId }: { setActivePageId: (id:
   const [isSummary, setIsSummary] = useState(false);
 
   return (
-    <div className={`mx-auto w-full pb-20 animate-in fade-in duration-300 ${isVideoPinned ? 'max-w-[95%]' : 'max-w-4xl'}`}>
+    <div className={`mx-auto w-full pb-20 animate-in fade-in duration-300 max-w-4xl`}>
       <div className="flex items-center justify-between mb-12">
         <div className="flex items-center gap-2 text-[13px] text-zinc-500 font-medium">
           <ArcadiaLogo />
@@ -3738,53 +3740,6 @@ const LinkedInEmailPage = ({ setActivePageId }: { setActivePageId: (id: string) 
       </div>
 
 
-      {/* Search Modal */}
-      {isSearchModalOpen && (
-        <div className="fixed inset-0 z-[100] flex items-start justify-center pt-[10vh] bg-black/60 backdrop-blur-sm animate-in fade-in duration-200" onClick={() => setIsSearchModalOpen(false)}>
-          <div 
-            className="bg-[#1A1A1E] border border-zinc-800 rounded-2xl w-full max-w-2xl flex flex-col overflow-hidden shadow-2xl"
-            onClick={e => e.stopPropagation()}
-          >
-            <div className="flex items-center gap-3 px-4 py-4 border-b border-zinc-800">
-              <Search size={20} className="text-zinc-400" />
-              <input 
-                autoFocus
-                type="text" 
-                value={searchQuery}
-                onChange={e => setSearchQuery(e.target.value)}
-                placeholder="Search pages..."
-                className="flex-1 bg-transparent text-white outline-none placeholder-zinc-500 text-[15px]"
-              />
-              <div className="text-[10px] font-semibold text-zinc-500 bg-[#141414] px-1.5 py-0.5 rounded-md border border-white/10">ESC</div>
-            </div>
-            <div className="max-h-[60vh] overflow-y-auto custom-scrollbar p-2">
-              {pages.filter(p => p.title.toLowerCase().includes(searchQuery.toLowerCase()) || p.id.toLowerCase().includes(searchQuery.toLowerCase())).map(page => (
-                <div 
-                  key={page.id}
-                  onClick={() => {
-                    setActivePageId(page.id);
-                    setIsSearchModalOpen(false);
-                    setSearchQuery('');
-                  }}
-                  className="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-white/5 cursor-pointer transition-colors"
-                >
-                  <FileText size={16} className="text-zinc-500" />
-                  <span className="text-zinc-300 text-[14px] font-medium">{page.title || 'Untitled'}</span>
-                  {page.type !== 'custom' && (
-                    <span className="ml-auto text-[11px] text-zinc-500 border border-white/10 px-1.5 py-0.5 rounded">Template</span>
-                  )}
-                </div>
-              ))}
-              {pages.filter(p => p.title.toLowerCase().includes(searchQuery.toLowerCase()) || p.id.toLowerCase().includes(searchQuery.toLowerCase())).length === 0 && (
-                <div className="p-8 text-center text-zinc-500 text-[14px]">
-                  No pages found
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
-
       {/* Modal de Plantillas */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
@@ -3869,6 +3824,8 @@ const CustomPageEditor = ({ page, updatePage }: { page: Page, updatePage: (id: s
 };
 
 export default function App() {
+  const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const [pages, setPages] = useState<Page[]>(() => {
     const saved = localStorage.getItem('arcadia_pages');
     if (saved) {
@@ -3994,6 +3951,7 @@ export default function App() {
     if (type === 'default_sales_parent') return <Target size={16} />;
     if (type === 'default_sales_16m') return <DollarSign size={16} />;
     if (type === 'default_sales_showrate') return <Phone size={16} />;
+    if (type === 'default_sales_showrate_course') return <BarChart size={16} />;
     if (type === 'default_linkedin_insight_summary') return <PlayCircle size={16} />;
     if (type === 'default_linkedin_insight_gtm') return <BarChart size={16} />;
     if (type === 'default_linkedin_vistas') return <Magnet size={16} />;
@@ -4331,6 +4289,7 @@ export default function App() {
             {activePage?.type === 'default_sales_parent' && <SalesParentPage setActivePageId={setActivePageId} />}
             {activePage?.type === 'default_sales_16m' && <Sales16MPage setActivePageId={setActivePageId} />}
             {activePage?.type === 'default_sales_showrate' && <SalesShowRatePage setActivePageId={setActivePageId} />}
+              {activePage?.type === 'default_sales_showrate_course' && <SalesShowRateCoursePage setActivePageId={setActivePageId} />}
             {activePage?.type === 'default_linkedin_insight_parent' && <LinkedInInsightParentPage setActivePageId={setActivePageId} />}
             {activePage?.type === 'default_linkedin_insight_summary' && <LinkedInInsightSummaryPage setActivePageId={setActivePageId} />}
             {activePage?.type === 'default_linkedin_insight_gtm' && <LinkedInInsightGtmPage setActivePageId={setActivePageId} />}
@@ -4396,6 +4355,7 @@ export default function App() {
                 {splitPage?.type === 'default_sales_parent' && <SalesParentPage setActivePageId={setSplitPageId} />}
                 {splitPage?.type === 'default_sales_16m' && <Sales16MPage setActivePageId={setSplitPageId} />}
                 {splitPage?.type === 'default_sales_showrate' && <SalesShowRatePage setActivePageId={setSplitPageId} />}
+                  {splitPage?.type === 'default_sales_showrate_course' && <SalesShowRateCoursePage setActivePageId={setSplitPageId} />}
                 {splitPage?.type === 'default_linkedin_insight_parent' && <LinkedInInsightParentPage setActivePageId={setSplitPageId} />}
                 {splitPage?.type === 'default_linkedin_insight_summary' && <LinkedInInsightSummaryPage setActivePageId={setSplitPageId} />}
                 {splitPage?.type === 'default_linkedin_insight_gtm' && <LinkedInInsightGtmPage setActivePageId={setSplitPageId} />}
@@ -4413,6 +4373,55 @@ export default function App() {
         })()}
 
       </div>
+    
+      {/* Search Modal */}
+      {isSearchModalOpen && (
+        <div className="fixed inset-0 z-[100] flex items-start justify-center pt-[10vh] bg-black/60 backdrop-blur-sm animate-in fade-in duration-200" onClick={() => setIsSearchModalOpen(false)}>
+          <div 
+            className="bg-[#1A1A1E] border border-zinc-800 rounded-2xl w-full max-w-2xl flex flex-col overflow-hidden shadow-2xl"
+            onClick={e => e.stopPropagation()}
+          >
+            <div className="flex items-center gap-3 px-4 py-4 border-b border-zinc-800">
+              <Search size={20} className="text-zinc-400" />
+              <input 
+                autoFocus
+                type="text" 
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
+                placeholder="Search pages..."
+                className="flex-1 bg-transparent text-white outline-none placeholder-zinc-500 text-[15px]"
+              />
+              <div className="text-[10px] font-semibold text-zinc-500 bg-[#141414] px-1.5 py-0.5 rounded-md border border-white/10">ESC</div>
+            </div>
+            <div className="max-h-[60vh] overflow-y-auto custom-scrollbar p-2">
+              {pages.filter(p => p.title.toLowerCase().includes(searchQuery.toLowerCase()) || p.id.toLowerCase().includes(searchQuery.toLowerCase())).map(page => (
+                <div 
+                  key={page.id}
+                  onClick={() => {
+                    setActivePageId(page.id);
+                    setIsSearchModalOpen(false);
+                    setSearchQuery('');
+                  }}
+                  className="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-white/5 cursor-pointer transition-colors"
+                >
+                  <FileText size={16} className="text-zinc-500" />
+                  <span className="text-zinc-300 text-[14px] font-medium">{page.title || 'Untitled'}</span>
+                  {page.type !== 'custom' && (
+                    <span className="ml-auto text-[11px] text-zinc-500 border border-white/10 px-1.5 py-0.5 rounded">Template</span>
+                  )}
+                </div>
+              ))}
+              {pages.filter(p => p.title.toLowerCase().includes(searchQuery.toLowerCase()) || p.id.toLowerCase().includes(searchQuery.toLowerCase())).length === 0 && (
+                <div className="p-8 text-center text-zinc-500 text-[14px]">
+                  No pages found
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      
     </div>
   );
 }
