@@ -1,6 +1,6 @@
 import { TableOfContents } from './components/TableOfContents';
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { Columns, Maximize2, Target, CheckCircle2, AlertTriangle, PlayCircle, Zap, ShieldAlert, Crosshair, Users, LineChart, MessageSquare, TrendingUp, RefreshCw, Filter, Copy, ArrowDownToLine, MousePointerClick, BarChart } from 'lucide-react';
+import { Columns, Maximize2, PanelTop, Target, CheckCircle2, AlertTriangle, PlayCircle, Zap, ShieldAlert, Crosshair, Users, LineChart, MessageSquare, TrendingUp, RefreshCw, Filter, Copy, ArrowDownToLine, MousePointerClick, BarChart } from 'lucide-react';
 
 const ArcadiaLogo = ({ className = "w-4 h-4" }) => (
   <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
@@ -10,7 +10,7 @@ const ArcadiaLogo = ({ className = "w-4 h-4" }) => (
 );
 
 export const TesisKeepAdsProfitablePage = ({ setActivePageId }: { setActivePageId: (id: string) => void }) => {
-  const [isVideoPinned, setIsVideoPinned] = useState(false);
+  const [videoMode, setVideoMode] = useState<'default' | 'side' | 'top'>('default');
   const [videoWidth, setVideoWidth] = useState(500);
   const [isResizing, setIsResizing] = useState(false);
   const videoContainerRef = useRef<HTMLDivElement>(null);
@@ -56,7 +56,7 @@ export const TesisKeepAdsProfitablePage = ({ setActivePageId }: { setActivePageI
   }, [isResizing]);
 
   return (
-    <div className={`mx-auto w-full pb-20 animate-in fade-in duration-300 ${isVideoPinned ? 'max-w-[95%]' : 'max-w-4xl'}`}>
+    <div className={`mx-auto w-full pb-20 animate-in fade-in duration-300 ${videoMode === 'side' ? 'max-w-[95%]' : 'max-w-3xl'}`}>
       <TableOfContents sections={[
         {"id":"section-0","title":"Planteamiento del problema"},
         {"id":"section-1","title":"El concepto central: todo es un gráfico de probabilidades"},
@@ -82,15 +82,14 @@ export const TesisKeepAdsProfitablePage = ({ setActivePageId }: { setActivePageI
         </div>
       </div>
 
-      <div className={`flex items-start gap-8 ${isVideoPinned ? 'flex-row' : 'flex-col'}`}>
+      <div className={`flex items-start gap-8 ${videoMode === 'side' ? 'flex-row' : 'flex-col'}`}>
         {/* Video Container */}
-        
         <div 
           ref={videoContainerRef}
-          style={isVideoPinned ? { width: `${videoWidth}px` } : {}}
-          className={`${isVideoPinned ? 'order-2 shrink-0 sticky top-6' : 'order-1 w-full'} ${!isResizing ? 'transition-all duration-500' : ''}`}
+          style={videoMode === 'side' ? { width: `${videoWidth}px` } : {}}
+          className={`${videoMode === 'side' ? 'order-2 shrink-0 sticky top-6' : 'order-1 w-full'} ${videoMode === 'top' ? 'sticky top-6 z-30' : ''} ${!isResizing ? 'transition-all duration-500' : ''}`}
         >
-          {isVideoPinned && (
+          {videoMode === 'side' && (
             <div 
               onMouseDown={startResizing}
               className="absolute -left-4 top-0 bottom-0 w-8 cursor-col-resize z-20 group/resizer flex items-center justify-center"
@@ -100,14 +99,23 @@ export const TesisKeepAdsProfitablePage = ({ setActivePageId }: { setActivePageI
             </div>
           )}
           <div className="w-full aspect-video rounded-3xl overflow-hidden border border-[#27272A]/80 shadow-2xl mb-8 bg-[#121214] relative group">
-            <button 
-              onClick={() => setIsVideoPinned(!isVideoPinned)}
-              className="absolute top-4 right-4 bg-black/60 hover:bg-black/80 text-white p-2.5 rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-300 backdrop-blur-md border border-white/10 z-10 flex items-center gap-2 text-sm font-medium"
-              title={isVideoPinned ? "Volver al centro" : "Fijar a la derecha"}
-            >
-              {isVideoPinned ? <Maximize2 size={16} /> : <Columns size={16} />}
-              {isVideoPinned ? "Desfijar" : "Fijar lectura"}
-            </button>
+            <div className="absolute top-4 right-4 flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300 z-10">
+              {videoMode !== 'default' && (
+                <button onClick={() => setVideoMode('default')} className="bg-black/60 hover:bg-black/80 text-white p-2.5 rounded-xl backdrop-blur-md border border-white/10 flex items-center gap-2 text-sm font-medium">
+                  <Maximize2 size={16} /> Desfijar
+                </button>
+              )}
+              {videoMode !== 'side' && (
+                <button onClick={() => setVideoMode('side')} className="bg-black/60 hover:bg-black/80 text-white p-2.5 rounded-xl backdrop-blur-md border border-white/10 flex items-center gap-2 text-sm font-medium">
+                  <Columns size={16} /> Fijar lateral
+                </button>
+              )}
+              {videoMode !== 'top' && (
+                <button onClick={() => setVideoMode('top')} className="bg-black/60 hover:bg-black/80 text-white p-2.5 rounded-xl backdrop-blur-md border border-white/10 flex items-center gap-2 text-sm font-medium">
+                  <PanelTop size={16} /> Fijar arriba
+                </button>
+              )}
+            </div>
             <iframe 
               width="100%" 
               height="100%" 
@@ -121,7 +129,7 @@ export const TesisKeepAdsProfitablePage = ({ setActivePageId }: { setActivePageI
         </div>
 
         {/* Text Content Area */}
-        <div className={`flex-1 min-w-0 w-full ${isVideoPinned ? 'order-1' : 'order-2'}`}>
+        <div className={`flex-1 min-w-0 w-full ${videoMode === 'side' ? 'order-1' : 'order-2'}`}>
           <div className="space-y-16">
 
             <section id="section-0" className="border border-[#27272A]/80 bg-[#121214] rounded-[2rem] p-8 lg:p-10 shadow-lg mb-8">

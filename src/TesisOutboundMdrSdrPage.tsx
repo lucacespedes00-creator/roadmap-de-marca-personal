@@ -1,7 +1,7 @@
 import { TableOfContents } from './components/TableOfContents';
 
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { Pin, PinOff, Columns, Maximize2, ArrowDown, Layers, UserPlus, Briefcase, PhoneCall, Mail, Megaphone, Target, CheckCircle2, XCircle, AlertTriangle, BarChart, TrendingUp, Users, DollarSign, BookOpen, Calculator , Activity , ListOrdered , MessageSquare , Clock , Filter , ArrowLeft , ArrowRight , MessageCircle , Zap , MousePointerClick , Settings , Cpu, FileText, PhoneForwarded, Search, Info, PlayCircle, Video, Compass, Crosshair, HelpCircle, Lightbulb, ArrowRightLeft, ClipboardCheck, PhoneOff, SlidersHorizontal, Handshake } from 'lucide-react';
+import { Pin, PinOff, Columns, Maximize2, PanelTop, ArrowDown, Layers, UserPlus, Briefcase, PhoneCall, Mail, Megaphone, Target, CheckCircle2, XCircle, AlertTriangle, BarChart, TrendingUp, Users, DollarSign, BookOpen, Calculator , Activity , ListOrdered , MessageSquare , Clock , Filter , ArrowLeft , ArrowRight , MessageCircle , Zap , MousePointerClick , Settings , Cpu, FileText, PhoneForwarded, Search, Info, PlayCircle, Video, Compass, Crosshair, HelpCircle, Lightbulb, ArrowRightLeft, ClipboardCheck, PhoneOff, SlidersHorizontal, Handshake } from 'lucide-react';
 
 const ArcadiaLogo = ({ className = "w-4 h-4" }) => (
   <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
@@ -35,7 +35,7 @@ const OutreachCard = ({ title, subtitle }: { title: string, subtitle: string }) 
 );
 
 export const TesisOutboundMdrSdrPage = ({ setActivePageId }: { setActivePageId: (id: string) => void }) => {
-  const [isVideoPinned, setIsVideoPinned] = useState(false);
+  const [videoMode, setVideoMode] = useState<'default' | 'side' | 'top'>('default');
   const [videoWidth, setVideoWidth] = useState(500);
   const [isResizing, setIsResizing] = useState(false);
   const videoContainerRef = useRef<HTMLDivElement>(null);
@@ -83,7 +83,7 @@ export const TesisOutboundMdrSdrPage = ({ setActivePageId }: { setActivePageId: 
   }, [isResizing]);
 
   return (
-    <div className={`mx-auto w-full pb-20 animate-in fade-in duration-300 ${isVideoPinned ? 'max-w-[95%]' : 'max-w-4xl'}`}>
+    <div className={`mx-auto w-full pb-20 animate-in fade-in duration-300 ${videoMode === 'side' ? 'max-w-[95%]' : 'max-w-3xl'}`}>
       <TableOfContents sections={[{"id":"section-0","title":"SDRs (Outbound)"},{"id":"section-1","title":"MDRs (Inbound)"},{"id":"section-2","title":"Veredicto: SDR vs MDR"},{"id":"section-3","title":"Aviso: GRAN ERROR antes de continuar"},{"id":"section-4","title":"Modelos de Ingresos MDR"},{"id":"section-5","title":"Modelos MDR Comunes"},{"id":"section-6","title":"Funnel Low Ticket + Setter Outbound"},{"id":"section-7","title":"Funnel Low Ticket + Llamada de Implementación"},{"id":"section-8","title":"Funnel de DM Setting"},{"id":"section-9","title":"Eventos en Vivo"},{"id":"section-10","title":"Encrucijada"},{"id":"section-11","title":"Leads Por Setter Al Mes"},{"id":"section-12","title":"Benchmarks Comunes:"},{"id":"section-13","title":"Si Faltan Leads"},{"id":"section-14","title":"¿Deberían Los Setters Tomar Reservas Directas?"},{"id":"section-15","title":"El Problema de Capacidad de Triage"},{"id":"section-16","title":"KPIs de Setter Para Funnel de Llamada"},{"id":"section-17","title":"Velocidad al Lead"},{"id":"section-18","title":"Buckets de Leads"},{"id":"section-19","title":"Lógica de Marcado Manual"},{"id":"section-20","title":"Dialer.io Automático"},{"id":"section-21","title":"Mejores Prácticas"},{"id":"section-22","title":"Mejores Prácticas de Lógica de Marcación"},{"id":"section-23","title":"Scripts de Mensajes de Texto"},{"id":"section-24","title":"Gran Error"},{"id":"section-25","title":"Leyes TCPA:"},{"id":"section-26","title":"Nota Rápida Sobre IA / Automatización"},{"id":"section-27","title":"Scripts de Email:"},{"id":"section-28","title":"Scripts de Llamadas"},{"id":"section-29","title":"Diferentes Variaciones"},{"id":"section-30","title":"Guion Outbound"},{"id":"section-31","title":"Discovery:"},{"id":"section-32","title":"Transición y Cierre"},{"id":"section-33","title":"Calificar (Opcional)"},{"id":"section-34","title":"Cierre (Ending)"},{"id":"section-35","title":"Llamada de Triage"}]} />
       <div className="flex items-center justify-between mb-12">
         <div className="flex items-center gap-2 text-[13px] text-zinc-500 font-medium">
@@ -104,15 +104,15 @@ export const TesisOutboundMdrSdrPage = ({ setActivePageId }: { setActivePageId: 
         </div>
       </div>
 
-      <div className={`flex items-start gap-8 ${isVideoPinned ? 'flex-row' : 'flex-col'}`}>
+      <div className={`flex items-start gap-8 ${videoMode === 'side' ? 'flex-row' : 'flex-col'}`}>
         {/* Video Container */}
         
         <div 
           ref={videoContainerRef}
-          style={isVideoPinned ? { width: `${videoWidth}px` } : {}}
-          className={`${isVideoPinned ? 'order-2 shrink-0 sticky top-6' : 'order-1 w-full'} ${!isResizing ? 'transition-all duration-500' : ''}`}
+          style={videoMode === 'side' ? { width: `${videoWidth}px` } : {}}
+          className={`${videoMode === 'side' ? 'order-2 shrink-0 sticky top-6' : 'order-1 w-full'} ${videoMode === 'top' ? 'sticky top-6 z-30' : ''} ${!isResizing ? 'transition-all duration-500' : ''}`}
         >
-          {isVideoPinned && (
+          {videoMode === 'side' && (
             <div 
               onMouseDown={startResizing}
               className="absolute -left-4 top-0 bottom-0 w-8 cursor-col-resize z-20 group/resizer flex items-center justify-center"
@@ -122,22 +122,31 @@ export const TesisOutboundMdrSdrPage = ({ setActivePageId }: { setActivePageId: 
             </div>
           )}
           <div className="w-full aspect-video rounded-3xl overflow-hidden border border-[#27272A]/80 shadow-2xl mb-8 bg-[#121214] relative group">
-            <button 
-              onClick={() => setIsVideoPinned(!isVideoPinned)}
-              className="absolute top-4 right-4 bg-black/60 hover:bg-black/80 text-white p-2.5 rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-300 backdrop-blur-md border border-white/10 z-10 flex items-center gap-2 text-sm font-medium"
-              title={isVideoPinned ? "Volver al centro" : "Fijar a la derecha"}
-            >
-              {isVideoPinned ? <Maximize2 size={16} /> : <Columns size={16} />}
-              {isVideoPinned ? "Desfijar" : "Fijar lectura"}
-            </button>
-        <iframe 
-          width="100%" 
-          height="100%" 
-          src="https://www.youtube.com/embed/oWYKaIULG9Q" 
-          title="YouTube video player" 
-          frameBorder="0" 
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-          allowFullScreen
+            <div className="absolute top-4 right-4 flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300 z-10">
+              {videoMode !== 'default' && (
+                <button onClick={() => setVideoMode('default')} className="bg-black/60 hover:bg-black/80 text-white p-2.5 rounded-xl backdrop-blur-md border border-white/10 flex items-center gap-2 text-sm font-medium">
+                  <Maximize2 size={16} /> Desfijar
+                </button>
+              )}
+              {videoMode !== 'side' && (
+                <button onClick={() => setVideoMode('side')} className="bg-black/60 hover:bg-black/80 text-white p-2.5 rounded-xl backdrop-blur-md border border-white/10 flex items-center gap-2 text-sm font-medium">
+                  <Columns size={16} /> Fijar lateral
+                </button>
+              )}
+              {videoMode !== 'top' && (
+                <button onClick={() => setVideoMode('top')} className="bg-black/60 hover:bg-black/80 text-white p-2.5 rounded-xl backdrop-blur-md border border-white/10 flex items-center gap-2 text-sm font-medium">
+                  <PanelTop size={16} /> Fijar arriba
+                </button>
+              )}
+            </div>
+            <iframe 
+              width="100%" 
+              height="100%" 
+              src="https://www.youtube.com/embed/oWYKaIULG9Q" 
+              title="YouTube video player" 
+              frameBorder="0" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+              allowFullScreen
         ></iframe>
           </div>
         </div>
