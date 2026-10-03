@@ -56,7 +56,7 @@ export const TesisTrentConsultingPage = ({ setActivePageId }: { setActivePageId:
   }, [isResizing]);
 
   return (
-    <div className={`mx-auto w-full pb-20 animate-in fade-in duration-300 ${videoMode === 'side' ? 'max-w-[95%]' : 'max-w-4xl'}`}>
+    <div className={`mx-auto w-full pb-20 animate-in fade-in duration-300 ${videoMode === 'side' ? 'max-w-[95%]' : 'max-w-3xl'}`}>
       <TableOfContents sections={[
         {"id":"section-0","title":"Contexto del negocio"},
         {"id":"section-1","title":"El problema central"},
