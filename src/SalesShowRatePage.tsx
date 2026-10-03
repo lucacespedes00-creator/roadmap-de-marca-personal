@@ -91,8 +91,42 @@ export const SalesShowRatePage = ({ setActivePageId }: { setActivePageId: (id: s
 
       <div className={`flex items-start gap-8 ${isVideoPinned ? 'flex-row' : 'flex-col'}`}>
 
+        {/* Video */}
+        <div
+          ref={videoContainerRef}
+          style={isVideoPinned ? { width: `${videoWidth}px` } : {}}
+          className={`relative ${isVideoPinned ? 'order-2 shrink-0 sticky top-6' : 'order-1 w-full'} ${!isResizing ? 'transition-all duration-500' : ''}`}
+        >
+          {isVideoPinned && (
+            <div
+              onMouseDown={startResizing}
+              className="absolute -left-4 top-0 bottom-0 w-8 cursor-col-resize z-20 group/resizer flex items-center justify-center"
+            >
+              <div className={`h-16 w-1 rounded-full transition-colors duration-200 ${isResizing ? 'bg-[#D5B15B]' : 'bg-white/10 group-hover/resizer:bg-white/30'}`} />
+            </div>
+          )}
+          <div className="w-full aspect-video rounded-3xl overflow-hidden border border-[#27272A]/80 shadow-2xl mb-8 bg-[#121214] relative group">
+            <button
+              onClick={() => setIsVideoPinned(!isVideoPinned)}
+              className="absolute top-4 right-4 bg-black/60 hover:bg-black/80 text-white p-2.5 rounded-xl opacity-0 group-hover:opacity-100 transition-all duration-300 backdrop-blur-md border border-white/10 z-10 flex items-center gap-2 text-sm font-medium"
+            >
+              {isVideoPinned ? <Maximize2 size={16} /> : <Columns size={16} />}
+              {isVideoPinned ? 'Desfijar' : 'Fijar lectura'}
+            </button>
+            <iframe
+              width="100%"
+              height="100%"
+              src="https://www.youtube.com/embed/87xSdKzf940"
+              title="YouTube video player"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
+          </div>
+        </div>
+
         {/* Content */}
-        <div className={`${isVideoPinned ? 'order-1 flex-1 min-w-0' : 'order-1 w-full'}`}>
+        <div className={`${isVideoPinned ? 'order-1 flex-1 min-w-0' : 'order-2 w-full'}`}>
           <div className="space-y-16">
 
             {/* Section 0 */}
