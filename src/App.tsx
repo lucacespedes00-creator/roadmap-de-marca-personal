@@ -11,6 +11,8 @@ import { TesisTrentConsultingPage } from './TesisTrentConsultingPage';
 import { TesisScaleMetaAdsPage } from './TesisScaleMetaAdsPage';
 import { ModelIf100kPage } from './ModelIf100kPage';
 import { Sales16MPage } from './Sales16MPage';
+import { SalesShowRatePage } from './SalesShowRatePage';
+import { CleansEditorPage } from './CleansEditorPage';
 import { 
   Home, Maximize2, ArrowLeftRight, SlidersHorizontal, LayoutGrid, Database, 
   Video, Phone, Diamond, Users, AlignLeft, 
@@ -32,10 +34,11 @@ const ArcadiaLogo = ({ className = "w-4 h-4" }) => (
 type Page = {
   id: string;
   title: string;
-  type: 'default_plan' | 'default_etapa' | 'default_contenido' | 'default_linkedin_ideas' | 'default_linkedin_content' | 'default_linkedin_parent' | 'default_linkedin_angulos' | 'default_linkedin_acquisition_parent' | 'default_linkedin_vistas' | 'default_linkedin_outbound' | 'default_linkedin_insight_parent' | 'default_linkedin_insight_summary' | 'default_linkedin_insight_gtm' | 'default_linkedin_email' | 'default_marketing_parent' | 'default_marketing_asimilacion' | 'default_tesis_acquisition' | 'default_tesis_outbound_mdr_sdr' | 'default_tesis_jeremy_ads' | 'default_tesis_keep_ads_profitable' | 'default_tesis_pixel_conditioning' | 'default_tesis_3cs' | 'default_tesis_trent_consulting' | 'default_tesis_scale_meta_ads' | 'default_ads_parent' | 'default_model_parent' | 'default_model_if100k' | 'default_sales_parent' | 'default_sales_16m' | 'custom';
+  type: 'default_plan' | 'default_etapa' | 'default_contenido' | 'default_linkedin_ideas' | 'default_linkedin_content' | 'default_linkedin_parent' | 'default_linkedin_angulos' | 'default_linkedin_acquisition_parent' | 'default_linkedin_vistas' | 'default_linkedin_outbound' | 'default_linkedin_insight_parent' | 'default_linkedin_insight_summary' | 'default_linkedin_insight_gtm' | 'default_linkedin_email' | 'default_marketing_parent' | 'default_marketing_asimilacion' | 'default_tesis_acquisition' | 'default_tesis_outbound_mdr_sdr' | 'default_tesis_jeremy_ads' | 'default_tesis_keep_ads_profitable' | 'default_tesis_pixel_conditioning' | 'default_tesis_3cs' | 'default_tesis_trent_consulting' | 'default_tesis_scale_meta_ads' | 'default_ads_parent' | 'default_model_parent' | 'default_model_if100k' | 'default_sales_parent' | 'default_sales_16m' | 'default_sales_showrate' | 'custom' | 'clean';
   content?: string;
   parentId?: string;
-  section?: 'tesis' | 'aprendizajes';
+  section?: 'tesis' | 'aprendizajes' | 'cleans';
+  cleanBlocks?: any[];
 };
 
 const defaultPages: Page[] = [
@@ -52,6 +55,7 @@ const defaultPages: Page[] = [
   { id: 'model_if100k', title: 'If I Had NOTHING, Here\'s How I\'d Make $100,000 in 3 Months', type: 'default_model_if100k', parentId: 'model_parent', section: 'aprendizajes' },
   { id: 'sales_parent', title: 'Sales', type: 'default_sales_parent', section: 'aprendizajes' },
   { id: 'sales_16m', title: '$16.000.000 en conocimiento de ventas en 36 minutos', type: 'default_sales_16m', parentId: 'sales_parent', section: 'aprendizajes' },
+  { id: 'sales_showrate', title: 'Cómo arreglar tu show rate: resumen completo', type: 'default_sales_showrate', parentId: 'sales_parent', section: 'aprendizajes' },
 ];
 
 const AreaItem = ({ icon: Icon, title, desc, active, onClick }: any) => (
@@ -267,6 +271,12 @@ const SalesParentPage = ({ setActivePageId }: { setActivePageId: (id: string) =>
           title="$16.000.000 en conocimiento de ventas en 36 minutos" 
           desc="El playbook definitivo de Serge para diagnosticar dolores y cobrar high-ticket." 
           onClick={() => setActivePageId('sales_16m')}
+        />
+        <AreaItem 
+          icon={Phone} 
+          title="Cómo arreglar tu show rate: resumen completo" 
+          desc="12 tácticas para pasar de 40% a 80% de show rate: booking window, LNS, application grading y más." 
+          onClick={() => setActivePageId('sales_showrate')}
         />
       </div>
     </div>
@@ -3894,6 +3904,7 @@ export default function App() {
   const [tesisExpanded, setTesisExpanded] = useState(true);
   const [aprendizajesExpanded, setAprendizajesExpanded] = useState(true);
   const [expandedPages, setExpandedPages] = useState<Record<string, boolean>>({});
+  const [cleansExpanded, setCleansExpanded] = useState(true);
 
   const togglePageExpand = (pageId: string) => {
     setExpandedPages(prev => ({ ...prev, [pageId]: prev[pageId] === undefined ? false : !prev[pageId] }));
@@ -3925,6 +3936,20 @@ export default function App() {
       title: '',
       type: 'custom',
       content: ''
+    };
+    setPages([...pages, newPage]);
+    setActivePageId(newPage.id);
+    if (isMobile) setSidebarOpen(false);
+  };
+
+  const addCleanPage = () => {
+    const newPage: Page = {
+      id: Date.now().toString(),
+      title: '',
+      type: 'clean',
+      content: '',
+      section: 'cleans',
+      cleanBlocks: []
     };
     setPages([...pages, newPage]);
     setActivePageId(newPage.id);
@@ -3968,6 +3993,7 @@ export default function App() {
     if (type === 'default_model_if100k') return <DollarSign size={16} />;
     if (type === 'default_sales_parent') return <Target size={16} />;
     if (type === 'default_sales_16m') return <DollarSign size={16} />;
+    if (type === 'default_sales_showrate') return <Phone size={16} />;
     if (type === 'default_linkedin_insight_summary') return <PlayCircle size={16} />;
     if (type === 'default_linkedin_insight_gtm') return <BarChart size={16} />;
     if (type === 'default_linkedin_vistas') return <Magnet size={16} />;
@@ -4137,6 +4163,60 @@ export default function App() {
                 </div>
               )}
             </div>
+
+            {/* Cleans Section */}
+            <div className="flex flex-col">
+              <div className="flex items-center justify-between mb-2 px-3">
+                <div 
+                  onClick={() => setCleansExpanded(!cleansExpanded)}
+                  className="text-[13px] font-medium text-zinc-500 cursor-pointer hover:text-zinc-300 transition-colors"
+                >
+                  Cleans
+                </div>
+                <div 
+                  onClick={addCleanPage}
+                  className="text-zinc-500 hover:text-white cursor-pointer transition-colors p-1"
+                >
+                  <Plus size={14} />
+                </div>
+              </div>
+              {cleansExpanded && (
+                <div className="flex flex-col gap-0.5">
+                  {pages.filter(p => !p.parentId && p.section === 'cleans').length === 0 ? (
+                    <div className="px-3 py-1">
+                      <span className="text-[13px] text-zinc-600">No cleans</span>
+                    </div>
+                  ) : (
+                    pages.filter(p => !p.parentId && p.section === 'cleans').map((page) => (
+                      <div 
+                        key={page.id}
+                        onClick={() => {
+                          setActivePageId(page.id);
+                          if (isMobile) setSidebarOpen(false);
+                        }}
+                        className={`flex items-center justify-between px-3 py-2 rounded-xl cursor-pointer group transition-colors ${
+                          activePageId === page.id ? 'bg-[#2B2B2B] text-zinc-200' : 'text-zinc-400 hover:bg-white/5 hover:text-zinc-200'
+                        }`}
+                      >
+                        <div className="flex items-center gap-3 overflow-hidden">
+                          <FileText size={16} strokeWidth={2} className="text-zinc-500 ml-0.5" />
+                          <span className="text-[14px] font-medium truncate">
+                            {page.title || 'Nueva Página'}
+                          </span>
+                        </div>
+                        <div 
+                          className="opacity-0 group-hover:opacity-100 p-1 hover:text-white transition-all text-zinc-500 shrink-0"
+                          onClick={(e) => deletePage(e, page.id)}
+                        >
+                          <Trash2 size={14} />
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
+              )}
+            </div>
+
           </div>
 
           {/* Bottom Section */}
@@ -4250,6 +4330,7 @@ export default function App() {
             {activePage?.type === 'default_model_if100k' && <ModelIf100kPage setActivePageId={setActivePageId} />}
             {activePage?.type === 'default_sales_parent' && <SalesParentPage setActivePageId={setActivePageId} />}
             {activePage?.type === 'default_sales_16m' && <Sales16MPage setActivePageId={setActivePageId} />}
+            {activePage?.type === 'default_sales_showrate' && <SalesShowRatePage setActivePageId={setActivePageId} />}
             {activePage?.type === 'default_linkedin_insight_parent' && <LinkedInInsightParentPage setActivePageId={setActivePageId} />}
             {activePage?.type === 'default_linkedin_insight_summary' && <LinkedInInsightSummaryPage setActivePageId={setActivePageId} />}
             {activePage?.type === 'default_linkedin_insight_gtm' && <LinkedInInsightGtmPage setActivePageId={setActivePageId} />}
@@ -4260,6 +4341,7 @@ export default function App() {
             {activePage?.type === 'default_linkedin_content' && <LinkedInContentPage setActivePageId={setActivePageId} />}
             {activePage?.type === 'default_linkedin_email' && <LinkedInEmailPage setActivePageId={setActivePageId} />}
             {activePage?.type === 'custom' && <CustomPageEditor page={activePage} updatePage={updatePage} />}
+            {activePage?.type === 'clean' && <CleansEditorPage page={activePage} updatePage={updatePage} />}
           </div>
         </div>
 
@@ -4313,6 +4395,7 @@ export default function App() {
                 {splitPage?.type === 'default_model_if100k' && <ModelIf100kPage setActivePageId={setSplitPageId} />}
                 {splitPage?.type === 'default_sales_parent' && <SalesParentPage setActivePageId={setSplitPageId} />}
                 {splitPage?.type === 'default_sales_16m' && <Sales16MPage setActivePageId={setSplitPageId} />}
+                {splitPage?.type === 'default_sales_showrate' && <SalesShowRatePage setActivePageId={setSplitPageId} />}
                 {splitPage?.type === 'default_linkedin_insight_parent' && <LinkedInInsightParentPage setActivePageId={setSplitPageId} />}
                 {splitPage?.type === 'default_linkedin_insight_summary' && <LinkedInInsightSummaryPage setActivePageId={setSplitPageId} />}
                 {splitPage?.type === 'default_linkedin_insight_gtm' && <LinkedInInsightGtmPage setActivePageId={setSplitPageId} />}
@@ -4323,6 +4406,7 @@ export default function App() {
                 {splitPage?.type === 'default_linkedin_content' && <LinkedInContentPage setActivePageId={setSplitPageId} />}
                 {splitPage?.type === 'default_linkedin_email' && <LinkedInEmailPage setActivePageId={setSplitPageId} />}
                 {splitPage?.type === 'custom' && <CustomPageEditor page={splitPage} updatePage={updatePage} />}
+                {splitPage?.type === 'clean' && <CleansEditorPage page={splitPage} updatePage={updatePage} />}
               </div>
             </div>
           );
