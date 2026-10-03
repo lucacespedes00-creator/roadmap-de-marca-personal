@@ -71,7 +71,7 @@ const AreaItem = ({ icon: Icon, title, desc, active, onClick }: any) => (
 );
 
 const MarketingParentPage = ({ setActivePageId }: { setActivePageId: (id: string) => void }) => (
-  <div className="max-w-3xl mx-auto w-full pb-20 animate-in fade-in duration-300">
+  <div className="max-w-4xl mx-auto w-full pb-20 animate-in fade-in duration-300">
     <div className="flex items-center gap-2 text-[13px] text-zinc-500 mb-12 font-medium">
       <ArcadiaLogo />
       <span className="cursor-pointer hover:text-white transition-colors" onClick={() => setActivePageId('linkedin_parent')}>Arcadia</span>
@@ -104,7 +104,7 @@ const MarketingParentPage = ({ setActivePageId }: { setActivePageId: (id: string
 );
 
 const LinkedInParentPage = ({ setActivePageId }: { setActivePageId: (id: string) => void }) => (
-  <div className="max-w-3xl mx-auto w-full pb-20 animate-in fade-in duration-300">
+  <div className="max-w-4xl mx-auto w-full pb-20 animate-in fade-in duration-300">
     <div className="flex items-center gap-2 text-[13px] text-zinc-500 mb-12 font-medium">
       <ArcadiaLogo />
       <span className="cursor-pointer hover:text-white transition-colors" onClick={() => setActivePageId('linkedin_parent')}>Arcadia</span>
@@ -149,7 +149,7 @@ const LinkedInParentPage = ({ setActivePageId }: { setActivePageId: (id: string)
 );
 
 const AdsParentPage = ({ setActivePageId }: { setActivePageId: (id: string) => void }) => (
-  <div className="max-w-3xl mx-auto w-full pb-20 animate-in fade-in duration-300">
+  <div className="max-w-4xl mx-auto w-full pb-20 animate-in fade-in duration-300">
     <div className="flex items-center gap-2 text-[13px] text-zinc-500 mb-12 font-medium">
       <ArcadiaLogo />
       <span className="cursor-pointer hover:text-white transition-colors" onClick={() => setActivePageId('ads_parent')}>Arcadia</span>
@@ -212,7 +212,7 @@ const AdsParentPage = ({ setActivePageId }: { setActivePageId: (id: string) => v
 );
 
 const ModelParentPage = ({ setActivePageId }: { setActivePageId: (id: string) => void }) => (
-  <div className="max-w-3xl mx-auto w-full pb-20 animate-in fade-in duration-300">
+  <div className="max-w-4xl mx-auto w-full pb-20 animate-in fade-in duration-300">
     <div className="flex items-center gap-2 text-[13px] text-zinc-500 mb-12 font-medium">
       <ArcadiaLogo />
       <span className="cursor-pointer hover:text-white transition-colors" onClick={() => setActivePageId('model_parent')}>Arcadia</span>
@@ -245,7 +245,7 @@ const ModelParentPage = ({ setActivePageId }: { setActivePageId: (id: string) =>
 );
 
 const SalesParentPage = ({ setActivePageId }: { setActivePageId: (id: string) => void }) => (
-  <div className="max-w-3xl mx-auto w-full pb-20 animate-in fade-in duration-300">
+  <div className="max-w-4xl mx-auto w-full pb-20 animate-in fade-in duration-300">
     <div className="flex items-center gap-2 text-[13px] text-zinc-500 mb-12 font-medium">
       <ArcadiaLogo />
       <span className="cursor-pointer hover:text-white transition-colors" onClick={() => setActivePageId('sales_parent')}>Arcadia</span>
@@ -284,7 +284,7 @@ const SalesParentPage = ({ setActivePageId }: { setActivePageId: (id: string) =>
 );
 
 const TesisAcquisitionPage = ({ setActivePageId }: { setActivePageId: (id: string) => void }) => (
-  <div className="max-w-3xl mx-auto w-full pb-20 animate-in fade-in duration-300">
+  <div className="max-w-4xl mx-auto w-full pb-20 animate-in fade-in duration-300">
     <div className="flex items-center gap-2 text-[13px] text-zinc-500 mb-12 font-medium">
       <ArcadiaLogo />
       <span className="text-zinc-500">Tesis</span>
@@ -317,7 +317,7 @@ const TesisAcquisitionPage = ({ setActivePageId }: { setActivePageId: (id: strin
 );
 
 const LinkedInAcquisitionParentPage = ({ setActivePageId }: { setActivePageId: (id: string) => void }) => (
-  <div className="max-w-3xl mx-auto w-full pb-20 animate-in fade-in duration-300">
+  <div className="max-w-4xl mx-auto w-full pb-20 animate-in fade-in duration-300">
     <div className="flex items-center gap-2 text-[13px] text-zinc-500 mb-12 font-medium">
       <ArcadiaLogo />
       <span className="cursor-pointer hover:text-white transition-colors" onClick={() => setActivePageId('linkedin_parent')}>Arcadia</span>
@@ -362,7 +362,7 @@ const LinkedInAcquisitionParentPage = ({ setActivePageId }: { setActivePageId: (
 );
 
 const LinkedInInsightParentPage = ({ setActivePageId }: { setActivePageId: (id: string) => void }) => (
-  <div className="max-w-3xl mx-auto w-full pb-20 animate-in fade-in duration-300">
+  <div className="max-w-4xl mx-auto w-full pb-20 animate-in fade-in duration-300">
     <div className="flex items-center gap-2 text-[13px] text-zinc-500 mb-12 font-medium">
       <ArcadiaLogo />
       <span className="cursor-pointer hover:text-white transition-colors" onClick={() => setActivePageId('linkedin_parent')}>Arcadia</span>
@@ -3834,7 +3834,7 @@ const CustomPageEditor = ({ page, updatePage }: { page: Page, updatePage: (id: s
   const readTime = Math.max(1, Math.ceil(wordCount / 200));
 
   return (
-    <div className="max-w-3xl mx-auto w-full flex flex-col h-full min-h-[80vh] animate-in fade-in duration-300 pt-10 relative">
+    <div className="max-w-4xl mx-auto w-full flex flex-col h-full min-h-[80vh] animate-in fade-in duration-300 pt-10 relative">
       <input 
         type="text" 
         value={page.title} 

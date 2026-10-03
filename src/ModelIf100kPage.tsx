@@ -54,7 +54,7 @@ export const ModelIf100kPage = ({ setActivePageId }: { setActivePageId: (id: str
   }, [isResizing]);
 
   return (
-    <div className={`mx-auto w-full pb-20 animate-in fade-in duration-300 ${videoMode === 'side' ? 'max-w-[95%]' : 'max-w-3xl'}`}>
+    <div className={`mx-auto w-full pb-20 animate-in fade-in duration-300 ${videoMode === 'side' ? 'max-w-[95%]' : 'max-w-4xl'}`}>
       <TableOfContents sections={[
         {"id":"section-1","title":"Gancho inicial"},
         {"id":"section-2","title":"Validación del playbook (prueba social)"},

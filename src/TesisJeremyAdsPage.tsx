@@ -56,7 +56,7 @@ export const TesisJeremyAdsPage = ({ setActivePageId }: { setActivePageId: (id: 
   }, [isResizing]);
 
   return (
-    <div className={`mx-auto w-full pb-20 animate-in fade-in duration-300 ${videoMode === 'side' ? 'max-w-[95%]' : 'max-w-3xl'}`}>
+    <div className={`mx-auto w-full pb-20 animate-in fade-in duration-300 ${videoMode === 'side' ? 'max-w-[95%]' : 'max-w-4xl'}`}>
       <TableOfContents sections={[
         {"id":"section-0","title":"Disclaimer inicial"},
         {"id":"section-1","title":"1. Qué controla el targeting (lo más importante)"},

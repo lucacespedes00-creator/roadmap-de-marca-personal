@@ -56,7 +56,7 @@ export const Tesis3CsPage = ({ setActivePageId }: { setActivePageId: (id: string
   }, [isResizing]);
 
   return (
-    <div className={`mx-auto w-full pb-20 animate-in fade-in duration-300 ${videoMode === 'side' ? 'max-w-[95%]' : 'max-w-3xl'}`}>
+    <div className={`mx-auto w-full pb-20 animate-in fade-in duration-300 ${videoMode === 'side' ? 'max-w-[95%]' : 'max-w-4xl'}`}>
       <TableOfContents sections={[
         {"id":"section-0","title":"¿Qué son las 3 C's?"},
         {"id":"section-1","title":"1. CLICKS — Hacer que la gente correcta haga clic"},
