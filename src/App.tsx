@@ -280,6 +280,12 @@ const SalesParentPage = ({ setActivePageId }: { setActivePageId: (id: string) =>
           desc="12 tácticas para pasar de 40% a 80% de show rate: booking window, LNS, application grading y más." 
           onClick={() => setActivePageId('sales_showrate')}
         />
+        <AreaItem 
+          icon={BarChart} 
+          title="Show Rate Course (Formato Documento)" 
+          desc="El curso completo de SalesKick sobre c�mo aumentar el show rate, documentado paso a paso." 
+          onClick={() => setActivePageId('sales_showrate_course')}
+        />
       </div>
     </div>
   </div>
