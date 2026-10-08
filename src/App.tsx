@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { emailTemplates } from './emailTemplates';
 import { LinkedInInsightGtmPage } from './LinkedInInsightGtmPage';
 import { MarketingAsimilacionPage } from './MarketingAsimilacionPage';
