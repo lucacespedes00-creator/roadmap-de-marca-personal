@@ -3878,6 +3878,10 @@ export default function App() {
   const [activePageId, setActivePageId] = useState('tesis_acquisition');
   const [splitPageId, setSplitPageId] = useState<string | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarWidth, setSidebarWidth] = useState(260);
+  const [leftPaneRatio, setLeftPaneRatio] = useState(50);
+  const isResizingSidebar = useRef(false);
+  const isResizingPanes = useRef(false);
   const [tesisExpanded, setTesisExpanded] = useState(true);
   const [aprendizajesExpanded, setAprendizajesExpanded] = useState(true);
   const [expandedPages, setExpandedPages] = useState<Record<string, boolean>>({});
@@ -3891,6 +3895,42 @@ export default function App() {
   useEffect(() => {
     localStorage.setItem('arcadia_pages', JSON.stringify(pages));
   }, [pages]);
+
+    useEffect(() => {
+      const handleMouseMove = (e: MouseEvent) => {
+        if (isResizingSidebar.current) {
+          let newWidth = e.clientX;
+          if (newWidth < 200) newWidth = 200;
+          if (newWidth > 600) newWidth = 600;
+          setSidebarWidth(newWidth);
+        } else if (isResizingPanes.current) {
+          const sidebarOffset = sidebarOpen ? sidebarWidth : 0;
+          const availableWidth = window.innerWidth - sidebarOffset;
+          const mouseX = e.clientX - sidebarOffset;
+          let ratio = (mouseX / availableWidth) * 100;
+          if (ratio < 20) ratio = 20;
+          if (ratio > 80) ratio = 80;
+          setLeftPaneRatio(ratio);
+        }
+      };
+
+      const handleMouseUp = () => {
+        if (isResizingSidebar.current || isResizingPanes.current) {
+          isResizingSidebar.current = false;
+          isResizingPanes.current = false;
+          document.body.style.cursor = 'default';
+          document.body.style.userSelect = 'auto';
+        }
+      };
+
+      window.addEventListener('mousemove', handleMouseMove);
+      window.addEventListener('mouseup', handleMouseUp);
+      return () => {
+        window.removeEventListener('mousemove', handleMouseMove);
+        window.removeEventListener('mouseup', handleMouseUp);
+      };
+    }, [sidebarOpen, sidebarWidth]);
+    
 
   useEffect(() => {
     const checkMobile = () => {
@@ -3996,11 +4036,11 @@ export default function App() {
 
       {/* Sidebar */}
       <div 
-        className={`fixed md:static inset-y-0 left-0 z-50 flex flex-col transition-transform duration-300 ease-in-out ${
+        className={`fixed md:relative inset-y-0 left-0 z-50 flex flex-col transition-transform duration-300 ease-in-out ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0 md:w-0 md:opacity-0 md:overflow-hidden'
         }`}
       >
-        <div className="flex flex-col w-[260px] h-[calc(100vh-24px)] m-3 relative bg-[#171717] border border-white/5 rounded-[24px] overflow-hidden shadow-2xl">
+        <div style={{ width: isMobile ? 260 : sidebarWidth }} className="flex flex-col h-[calc(100vh-24px)] m-3 relative bg-[#171717] border border-white/5 rounded-[24px] overflow-hidden shadow-2xl shrink-0">
           <div className="flex-1 overflow-y-auto px-4 py-5 flex flex-col gap-6">
             
             {/* Create or search */}
@@ -4265,13 +4305,29 @@ export default function App() {
             </div>
           </div>
         </div>
-      </div>
       
-      {/* Main Content Area */}
+        {/* Sidebar Resize Handle */}
+        {!isMobile && sidebarOpen && (
+          <div 
+            className="absolute right-[-6px] top-0 bottom-0 w-3 cursor-col-resize hover:bg-white/10 transition-colors z-50 flex items-center justify-center group"
+            onMouseDown={(e) => {
+              e.preventDefault();
+              isResizingSidebar.current = true;
+              document.body.style.cursor = 'col-resize';
+              document.body.style.userSelect = 'none';
+            }}
+          >
+            <div className="w-[2px] h-8 bg-white/20 rounded-full group-hover:bg-white/50 transition-colors" />
+          </div>
+        )}
+
+      </div>
+        
+        {/* Main Content Area */}
       <div className={`flex-1 flex gap-3 h-screen py-3 pr-3 overflow-hidden bg-[#131313] ${!sidebarOpen ? 'pl-3' : 'pl-0'}`}>
         
         {/* Left Pane (Active Page) */}
-        <div className={`flex-1 flex flex-col relative bg-[#171717] border border-white/5 rounded-[24px] overflow-hidden shadow-2xl transition-all duration-300 ${splitPageId ? 'hidden md:flex' : 'flex'}`}>
+        <div style={{ flex: splitPageId && !isMobile ? `0 0 calc(${leftPaneRatio}% - 6px)` : '1 1 0%' }} className={`flex flex-col relative bg-[#171717] border border-white/5 rounded-[24px] overflow-hidden shadow-2xl ${splitPageId ? 'hidden md:flex' : 'flex'}`}>
           {/* Topbar */}
           <div className="h-14 flex items-center justify-between px-6 shrink-0 border-b border-transparent">
             <div className="flex items-center gap-2 text-zinc-400">
@@ -4351,11 +4407,28 @@ export default function App() {
           </div>
         </div>
 
-        {/* Right Pane (Split Page) */}
+        
+          {/* Panes Resize Handle */}
+          {splitPageId && !isMobile && (
+            <div 
+              className="w-3 cursor-col-resize hover:bg-white/10 transition-colors flex items-center justify-center group shrink-0 rounded-full"
+              onMouseDown={(e) => {
+                e.preventDefault();
+                isResizingPanes.current = true;
+                document.body.style.cursor = 'col-resize';
+                document.body.style.userSelect = 'none';
+              }}
+            >
+              <div className="w-[2px] h-8 bg-white/20 rounded-full group-hover:bg-white/50 transition-colors" />
+            </div>
+          )}
+
+
+          {/* Right Pane (Split Page) */}
         {splitPageId && (() => {
           const splitPage = pages.find(p => p.id === splitPageId);
           return (
-            <div className="flex-1 flex flex-col relative bg-[#171717] border border-white/5 rounded-[24px] overflow-hidden shadow-2xl animate-in slide-in-from-right-8 duration-300 transform-gpu hidden md:flex">
+            <div style={{ flex: `1 1 0%` }} className="flex flex-col relative bg-[#171717] border border-white/5 rounded-[24px] overflow-hidden shadow-2xl animate-in slide-in-from-right-8 duration-300 transform-gpu hidden md:flex">
               {/* Topbar */}
               <div className="h-14 flex items-center justify-between px-6 shrink-0 border-b border-transparent">
                 <div className="flex items-center gap-2 text-zinc-400">
