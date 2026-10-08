@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 interface Section {
   id: string;
@@ -12,6 +12,7 @@ interface TableOfContentsProps {
 export const TableOfContents: React.FC<TableOfContentsProps> = ({ sections }) => {
   const [activeSection, setActiveSection] = useState<string>('');
   const [isHovered, setIsHovered] = useState(false);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -48,8 +49,13 @@ export const TableOfContents: React.FC<TableOfContentsProps> = ({ sections }) =>
   return (
     <div
       className="absolute right-4 top-1/2 -translate-y-1/2 z-50 flex items-center transition-all duration-300 hidden lg:flex"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onMouseEnter={() => {
+        if (timeoutRef.current) clearTimeout(timeoutRef.current);
+        setIsHovered(true);
+      }}
+      onMouseLeave={() => {
+        timeoutRef.current = setTimeout(() => setIsHovered(false), 300);
+      }}
     >
       <div
         className={`absolute right-12 bg-[#1A1A1E] border border-zinc-800/80 rounded-xl p-5 shadow-2xl transition-all duration-300 origin-right min-w-[280px] max-h-[80vh] overflow-y-auto ${
