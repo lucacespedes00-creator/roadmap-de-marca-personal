@@ -17,7 +17,7 @@ import { CleansEditorPage } from './CleansEditorPage';
 import { 
   Home, Maximize2, ArrowLeftRight, SlidersHorizontal, LayoutGrid, Database, 
   Video, Phone, Diamond, Users, AlignLeft, 
-  CheckSquare, PieChart, Plus, FileText, Menu, PanelLeft, PanelLeftClose, X, Trash2, ChevronDown,
+  CheckSquare, PieChart, Plus, FileText, Menu, PanelLeft, PanelLeftClose, PanelRightOpen, X, Trash2, ChevronDown,
   Lightbulb, Target, Settings, Search, MessageSquare, Bot, 
   Zap, Instagram, TrendingUp, CheckCircle2, ListOrdered,
   PenTool, Layers, Copy, ArrowRight, ArrowDown, Mic, Compass, 
@@ -60,19 +60,33 @@ const defaultPages: Page[] = [
   { id: 'sales_showrate_course', title: 'Show Rate Course', type: 'default_sales_showrate_course', parentId: 'sales_parent', section: 'aprendizajes' },
 ];
 
-const AreaItem = ({ icon: Icon, title, desc, active, onClick }: any) => (
-  <div onClick={onClick} className={`flex items-center gap-4 p-4 rounded-2xl border transition-colors cursor-pointer ${active ? 'border-[#3F3F46]/60 bg-[#1A1A1E]' : 'border-transparent hover:border-[#3F3F46]/40 hover:bg-[#1A1A1E]/50'}`}>
-    <div className={active ? "text-white" : "text-zinc-500"}>
-      <Icon size={20} strokeWidth={1.5} />
+const AreaItem = ({ icon: Icon, title, desc, active, onClick, onSplit }: any) => (
+  <div onClick={onClick} className={`group flex items-center justify-between p-4 rounded-2xl border transition-colors cursor-pointer ${active ? 'border-[#3F3F46]/60 bg-[#1A1A1E]' : 'border-transparent hover:border-[#3F3F46]/40 hover:bg-[#1A1A1E]/50'}`}>
+    <div className="flex items-center gap-4">
+      <div className={active ? "text-white" : "text-zinc-500"}>
+        <Icon size={20} strokeWidth={1.5} />
+      </div>
+      <div className="flex flex-col gap-0.5">
+        <span className={`text-[15px] font-semibold ${active ? 'text-white' : 'text-zinc-200'}`}>{title}</span>
+        <span className="text-[13px] text-zinc-500">{desc}</span>
+      </div>
     </div>
-    <div className="flex flex-col gap-0.5">
-      <span className={`text-[15px] font-semibold ${active ? 'text-white' : 'text-zinc-200'}`}>{title}</span>
-      <span className="text-[13px] text-zinc-500">{desc}</span>
-    </div>
+    {onSplit && (
+      <div 
+        className="opacity-0 group-hover:opacity-100 p-2 hover:bg-white/10 rounded-lg text-zinc-400 hover:text-white transition-all shrink-0"
+        onClick={(e) => {
+          e.stopPropagation();
+          onSplit();
+        }}
+        title="Open in split view"
+      >
+        <PanelRightOpen size={18} />
+      </div>
+    )}
   </div>
 );
 
-const MarketingParentPage = ({ setActivePageId }: { setActivePageId: (id: string) => void }) => (
+const MarketingParentPage = ({ setActivePageId, setSplitPageId }: { setActivePageId: (id: string) => void, setSplitPageId?: (id: string) => void }) => (
   <div className="max-w-4xl mx-auto w-full pb-20 animate-in fade-in duration-300">
     <div className="flex items-center gap-2 text-[13px] text-zinc-500 mb-12 font-medium">
       <ArcadiaLogo />
@@ -99,13 +113,13 @@ const MarketingParentPage = ({ setActivePageId }: { setActivePageId: (id: string
           title="Marketing de Asimilación" 
           desc="Estrategia encubierta de percepción pública" 
           onClick={() => setActivePageId('marketing_asimilacion')} 
-        />
+         onSplit={() => setSplitPageId && setSplitPageId('marketing_asimilacion')} />
       </div>
     </div>
   </div>
 );
 
-const LinkedInParentPage = ({ setActivePageId }: { setActivePageId: (id: string) => void }) => (
+const LinkedInParentPage = ({ setActivePageId, setSplitPageId }: { setActivePageId: (id: string) => void, setSplitPageId?: (id: string) => void }) => (
   <div className="max-w-4xl mx-auto w-full pb-20 animate-in fade-in duration-300">
     <div className="flex items-center gap-2 text-[13px] text-zinc-500 mb-12 font-medium">
       <ArcadiaLogo />
@@ -132,25 +146,25 @@ const LinkedInParentPage = ({ setActivePageId }: { setActivePageId: (id: string)
           title="Ángulos de Venta" 
           desc="Cómo hacer ángulos de venta de alta conversión" 
           onClick={() => setActivePageId('linkedin_angulos')} 
-        />
+         onSplit={() => setSplitPageId && setSplitPageId('linkedin_angulos')} />
         <AreaItem 
           icon={Lightbulb} 
           title="Ideas LinkedIn" 
           desc="Sistema de generación de ideas para contenido" 
           onClick={() => setActivePageId('linkedin_ideas')} 
-        />
+         onSplit={() => setSplitPageId && setSplitPageId('linkedin_ideas')} />
         <AreaItem 
           icon={PenTool} 
           title="LinkedIn Playbook" 
           desc="Estrategias de copywriting y publicación" 
           onClick={() => setActivePageId('linkedin_content')} 
-        />
+         onSplit={() => setSplitPageId && setSplitPageId('linkedin_content')} />
       </div>
     </div>
   </div>
 );
 
-const AdsParentPage = ({ setActivePageId }: { setActivePageId: (id: string) => void }) => (
+const AdsParentPage = ({ setActivePageId, setSplitPageId }: { setActivePageId: (id: string) => void, setSplitPageId?: (id: string) => void }) => (
   <div className="max-w-4xl mx-auto w-full pb-20 animate-in fade-in duration-300">
     <div className="flex items-center gap-2 text-[13px] text-zinc-500 mb-12 font-medium">
       <ArcadiaLogo />
@@ -177,43 +191,43 @@ const AdsParentPage = ({ setActivePageId }: { setActivePageId: (id: string) => v
           title="The Most Valuable Meta Ads Training" 
           desc="Resumen completo: The Most Valuable Meta Ads Training (Jeremy)" 
           onClick={() => setActivePageId('tesis_jeremy_ads')} 
-        />
+         onSplit={() => setSplitPageId && setSplitPageId('tesis_jeremy_ads')} />
         <AreaItem 
           icon={Target} 
           title="The BEST Strategy To Keep Ads Profitable [FOREVER]" 
           desc="Sistema de 3 buckets y 4 protocolos para evitar la caída de calidad." 
           onClick={() => setActivePageId('tesis_keep_ads_profitable')} 
-        />
+         onSplit={() => setSplitPageId && setSplitPageId('tesis_keep_ads_profitable')} />
         <AreaItem 
           icon={Target} 
           title="How To Turn Paid Ads Into a Money-Printing Machine (Pixel Conditioning)" 
           desc="Cómo condicionar o recondicionar el píxel para atraer gente calificada." 
           onClick={() => setActivePageId('tesis_pixel_conditioning')} 
-        />
+         onSplit={() => setSplitPageId && setSplitPageId('tesis_pixel_conditioning')} />
         <AreaItem 
           icon={Target} 
           title="Las 3 C's" 
           desc="Clicks, Conversions y Close: el esqueleto del sistema de generación de leads." 
           onClick={() => setActivePageId('tesis_3cs')} 
-        />
+         onSplit={() => setSplitPageId && setSplitPageId('tesis_3cs')} />
         <AreaItem 
           icon={Target} 
           title="Consultoría de negocio a Trent (Regathered AI)" 
           desc="Análisis en vivo de un negocio de IA con 100K+/mes y plan para llegar al millón." 
           onClick={() => setActivePageId('tesis_trent_consulting')} 
-        />
+         onSplit={() => setSplitPageId && setSplitPageId('tesis_trent_consulting')} />
         <AreaItem 
           icon={Target} 
           title="How to Scale Meta Ads without Wrecking your ROAS" 
           desc="Guía en 5 pasos para escalar presupuesto manteniendo la rentabilidad." 
           onClick={() => setActivePageId('tesis_scale_meta_ads')} 
-        />
+         onSplit={() => setSplitPageId && setSplitPageId('tesis_scale_meta_ads')} />
       </div>
     </div>
   </div>
 );
 
-const ModelParentPage = ({ setActivePageId }: { setActivePageId: (id: string) => void }) => (
+const ModelParentPage = ({ setActivePageId, setSplitPageId }: { setActivePageId: (id: string) => void, setSplitPageId?: (id: string) => void }) => (
   <div className="max-w-4xl mx-auto w-full pb-20 animate-in fade-in duration-300">
     <div className="flex items-center gap-2 text-[13px] text-zinc-500 mb-12 font-medium">
       <ArcadiaLogo />
@@ -240,13 +254,13 @@ const ModelParentPage = ({ setActivePageId }: { setActivePageId: (id: string) =>
           title="If I Had NOTHING, Here's How I'd Make $100,000 in 3 Months" 
           desc="Playbook completo para lanzar y escalar a $10K-$30K/mes en 90 días o menos." 
           onClick={() => setActivePageId('model_if100k')} 
-        />
+         onSplit={() => setSplitPageId && setSplitPageId('model_if100k')} />
       </div>
     </div>
   </div>
 );
 
-const SalesParentPage = ({ setActivePageId }: { setActivePageId: (id: string) => void }) => (
+const SalesParentPage = ({ setActivePageId, setSplitPageId }: { setActivePageId: (id: string) => void, setSplitPageId?: (id: string) => void }) => (
   <div className="max-w-4xl mx-auto w-full pb-20 animate-in fade-in duration-300">
     <div className="flex items-center gap-2 text-[13px] text-zinc-500 mb-12 font-medium">
       <ArcadiaLogo />
@@ -273,25 +287,25 @@ const SalesParentPage = ({ setActivePageId }: { setActivePageId: (id: string) =>
           title="$16.000.000 en conocimiento de ventas en 36 minutos" 
           desc="El playbook definitivo de Serge para diagnosticar dolores y cobrar high-ticket." 
           onClick={() => setActivePageId('sales_16m')}
-        />
+         onSplit={() => setSplitPageId && setSplitPageId('sales_16m')} />
         <AreaItem 
           icon={Phone} 
           title="Cómo arreglar tu show rate: resumen completo" 
           desc="12 tácticas para pasar de 40% a 80% de show rate: booking window, LNS, application grading y más." 
           onClick={() => setActivePageId('sales_showrate')}
-        />
+         onSplit={() => setSplitPageId && setSplitPageId('sales_showrate')} />
         <AreaItem 
           icon={BarChart} 
           title="Show Rate Course (Formato Documento)" 
-          desc="El curso completo de SalesKick sobre c�mo aumentar el show rate, documentado paso a paso." 
+          desc="El curso completo de SalesKick sobre c�mo aumentar el show rate, documentado paso a paso." 
           onClick={() => setActivePageId('sales_showrate_course')}
-        />
+         onSplit={() => setSplitPageId && setSplitPageId('sales_showrate_course')} />
       </div>
     </div>
   </div>
 );
 
-const TesisAcquisitionPage = ({ setActivePageId }: { setActivePageId: (id: string) => void }) => (
+const TesisAcquisitionPage = ({ setActivePageId, setSplitPageId }: { setActivePageId: (id: string) => void, setSplitPageId?: (id: string) => void }) => (
   <div className="max-w-4xl mx-auto w-full pb-20 animate-in fade-in duration-300">
     <div className="flex items-center gap-2 text-[13px] text-zinc-500 mb-12 font-medium">
       <ArcadiaLogo />
@@ -318,13 +332,13 @@ const TesisAcquisitionPage = ({ setActivePageId }: { setActivePageId: (id: strin
           title="Modelos MDR vs. SDR" 
           desc="Definición y comparación de equipos de prospección." 
           onClick={() => setActivePageId('tesis_outbound_mdr_sdr')} 
-        />
+         onSplit={() => setSplitPageId && setSplitPageId('tesis_outbound_mdr_sdr')} />
       </div>
     </div>
   </div>
 );
 
-const LinkedInAcquisitionParentPage = ({ setActivePageId }: { setActivePageId: (id: string) => void }) => (
+const LinkedInAcquisitionParentPage = ({ setActivePageId, setSplitPageId }: { setActivePageId: (id: string) => void, setSplitPageId?: (id: string) => void }) => (
   <div className="max-w-4xl mx-auto w-full pb-20 animate-in fade-in duration-300">
     <div className="flex items-center gap-2 text-[13px] text-zinc-500 mb-12 font-medium">
       <ArcadiaLogo />
@@ -351,25 +365,25 @@ const LinkedInAcquisitionParentPage = ({ setActivePageId }: { setActivePageId: (
           title="Sistema de Señales" 
           desc="Convertir intención pasiva en pipeline puntuado" 
           onClick={() => setActivePageId('linkedin_vistas')} 
-        />
+         onSplit={() => setSplitPageId && setSplitPageId('linkedin_vistas')} />
         <AreaItem 
           icon={MessageSquare} 
           title="Outbound y LinkedIn" 
           desc="Cómo construí un negocio de $35K/Mes con 20 DMs por día" 
           onClick={() => setActivePageId('linkedin_outbound')} 
-        />
+         onSplit={() => setSplitPageId && setSplitPageId('linkedin_outbound')} />
         <AreaItem 
           icon={Mail} 
           title="Sistema de Email" 
           desc="Estrategia para convertir listas de correos en clientes" 
           onClick={() => setActivePageId('linkedin_email')} 
-        />
+         onSplit={() => setSplitPageId && setSplitPageId('linkedin_email')} />
       </div>
     </div>
   </div>
 );
 
-const LinkedInInsightParentPage = ({ setActivePageId }: { setActivePageId: (id: string) => void }) => (
+const LinkedInInsightParentPage = ({ setActivePageId, setSplitPageId }: { setActivePageId: (id: string) => void, setSplitPageId?: (id: string) => void }) => (
   <div className="max-w-4xl mx-auto w-full pb-20 animate-in fade-in duration-300">
     <div className="flex items-center gap-2 text-[13px] text-zinc-500 mb-12 font-medium">
       <ArcadiaLogo />
@@ -396,20 +410,20 @@ const LinkedInInsightParentPage = ({ setActivePageId }: { setActivePageId: (id: 
           title="Dominar el Scroll" 
           desc="Estrategia para adquirir clientes con contenido y maximizar confianza" 
           onClick={() => setActivePageId('linkedin_insight_summary')} 
-        />
+         onSplit={() => setSplitPageId && setSplitPageId('linkedin_insight_summary')} />
         <AreaItem 
           icon={BarChart} 
           title="Arquitectura GTM" 
           desc="Estrategia Go to Market para B2B" 
           onClick={() => setActivePageId('linkedin_insight_gtm')} 
-        />
+         onSplit={() => setSplitPageId && setSplitPageId('linkedin_insight_gtm')} />
       </div>
     </div>
   </div>
 );
 
 
-const LinkedInInsightSummaryPage = ({ setActivePageId }: { setActivePageId: (id: string) => void }) => {
+const LinkedInInsightSummaryPage = ({ setActivePageId, setSplitPageId }: { setActivePageId: (id: string) => void, setSplitPageId?: (id: string) => void }) => {
   const [isSummary, setIsSummary] = useState(false);
 
   return (
@@ -726,7 +740,7 @@ const LinkedInInsightSummaryPage = ({ setActivePageId }: { setActivePageId: (id:
   );
 }
 
-const LinkedInVistasPage = ({ setActivePageId }: { setActivePageId: (id: string) => void }) => {
+const LinkedInVistasPage = ({ setActivePageId, setSplitPageId }: { setActivePageId: (id: string) => void, setSplitPageId?: (id: string) => void }) => {
   const [isSummary, setIsSummary] = useState(false);
 
   return (
@@ -1094,7 +1108,7 @@ const LinkedInVistasPage = ({ setActivePageId }: { setActivePageId: (id: string)
 };
 
 
-const LinkedInOutboundPage = ({ setActivePageId }: { setActivePageId: (id: string) => void }) => {
+const LinkedInOutboundPage = ({ setActivePageId, setSplitPageId }: { setActivePageId: (id: string) => void, setSplitPageId?: (id: string) => void }) => {
   const [isSummary, setIsSummary] = useState(false);
 
   return (
@@ -1895,7 +1909,7 @@ const LinkedInOutboundPage = ({ setActivePageId }: { setActivePageId: (id: strin
   </div>
   );
 };
-const LinkedInIdeasPage = ({ setActivePageId }: { setActivePageId: (id: string) => void }) => {
+const LinkedInIdeasPage = ({ setActivePageId, setSplitPageId }: { setActivePageId: (id: string) => void, setSplitPageId?: (id: string) => void }) => {
   const [isSummary, setIsSummary] = useState(false);
 
   return (
@@ -2432,7 +2446,7 @@ const LinkedInSummaryView = () => (
   </div>
 );
 
-const LinkedInAngulosPage = ({ setActivePageId }: { setActivePageId: (id: string) => void }) => {
+const LinkedInAngulosPage = ({ setActivePageId, setSplitPageId }: { setActivePageId: (id: string) => void, setSplitPageId?: (id: string) => void }) => {
   const [isSummary, setIsSummary] = useState(false);
 
   return (
@@ -2674,7 +2688,7 @@ const LinkedInAngulosPage = ({ setActivePageId }: { setActivePageId: (id: string
   );
 };
 
-const LinkedInContentPage = ({ setActivePageId }: { setActivePageId: (id: string) => void }) => {
+const LinkedInContentPage = ({ setActivePageId, setSplitPageId }: { setActivePageId: (id: string) => void, setSplitPageId?: (id: string) => void }) => {
   const [isSummary, setIsSummary] = useState(false);
 
   return (
@@ -3061,7 +3075,7 @@ const LinkedInContentPage = ({ setActivePageId }: { setActivePageId: (id: string
 };
 
 
-const LinkedInEmailPage = ({ setActivePageId }: { setActivePageId: (id: string) => void }) => {
+const LinkedInEmailPage = ({ setActivePageId, setSplitPageId }: { setActivePageId: (id: string) => void, setSplitPageId?: (id: string) => void }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -4064,16 +4078,25 @@ export default function App() {
                             {page.title || 'Nueva Página'}
                           </span>
                         </div>
-                        {page.type === 'custom' ? (
-                          <div 
-                            className="opacity-0 group-hover:opacity-100 p-1 hover:text-white transition-all text-zinc-500 shrink-0"
-                            onClick={(e) => deletePage(e, page.id)}
-                          >
-                            <Trash2 size={14} />
+                        <div className="opacity-0 group-hover:opacity-100 flex items-center gap-1 shrink-0">
+                            <div 
+                              className="p-1 hover:text-white transition-all text-zinc-500"
+                              onClick={(e) => { e.stopPropagation(); setSplitPageId(page.id); }}
+                              title="Open in split view"
+                            >
+                              <PanelRightOpen size={14} />
+                            </div>
+                            {page.type === 'custom' ? (
+                              <div 
+                                className="p-1 hover:text-[#C06C5A] transition-all text-zinc-500"
+                                onClick={(e) => deletePage(e, page.id)}
+                              >
+                                <Trash2 size={14} />
+                              </div>
+                            ) : (
+                              <span className="text-[12px] font-medium text-[#C06C5A] opacity-90 group-hover:opacity-100 shrink-0">26 jun</span>
+                            )}
                           </div>
-                        ) : (
-                          <span className="text-[12px] font-medium text-[#C06C5A] opacity-90 group-hover:opacity-100 shrink-0">26 jun</span>
-                        )}
                       </div>
                     ))
                   )}
@@ -4113,14 +4136,23 @@ export default function App() {
                             {page.title || 'Nueva Página'}
                           </span>
                         </div>
-                        {page.type === 'custom' && (
-                          <div 
-                            className="opacity-0 group-hover:opacity-100 p-1 hover:text-white transition-all text-zinc-500 shrink-0"
-                            onClick={(e) => deletePage(e, page.id)}
-                          >
-                            <Trash2 size={14} />
+                        <div className="opacity-0 group-hover:opacity-100 flex items-center gap-1 shrink-0">
+                            <div 
+                              className="p-1 hover:text-white transition-all text-zinc-500"
+                              onClick={(e) => { e.stopPropagation(); setSplitPageId(page.id); }}
+                              title="Open in split view"
+                            >
+                              <PanelRightOpen size={14} />
+                            </div>
+                            {page.type === 'custom' && (
+                              <div 
+                                className="p-1 hover:text-[#C06C5A] transition-all text-zinc-500"
+                                onClick={(e) => deletePage(e, page.id)}
+                              >
+                                <Trash2 size={14} />
+                              </div>
+                            )}
                           </div>
-                        )}
                       </div>
                     ))
                   )}
