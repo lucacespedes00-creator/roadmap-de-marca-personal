@@ -47,7 +47,7 @@ export const TableOfContents: React.FC<TableOfContentsProps> = ({ sections }) =>
 
   return (
     <div
-      className="fixed right-8 top-1/2 -translate-y-1/2 z-50 flex items-center transition-all duration-300 hidden lg:flex"
+      className="absolute right-4 top-1/2 -translate-y-1/2 z-50 flex items-center transition-all duration-300 hidden lg:flex"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >

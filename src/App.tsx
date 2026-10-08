@@ -4000,7 +4000,7 @@ export default function App() {
           sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0 md:w-0 md:opacity-0 md:overflow-hidden'
         }`}
       >
-        <div className="flex flex-col w-[260px] h-[calc(100vh-24px)] m-3 bg-[#171717] border border-white/5 rounded-[24px] overflow-hidden shadow-2xl">
+        <div className="flex flex-col w-[260px] h-[calc(100vh-24px)] m-3 relative bg-[#171717] border border-white/5 rounded-[24px] overflow-hidden shadow-2xl">
           <div className="flex-1 overflow-y-auto px-4 py-5 flex flex-col gap-6">
             
             {/* Create or search */}
@@ -4271,7 +4271,7 @@ export default function App() {
       <div className={`flex-1 flex gap-3 h-screen py-3 pr-3 overflow-hidden bg-[#131313] ${!sidebarOpen ? 'pl-3' : 'pl-0'}`}>
         
         {/* Left Pane (Active Page) */}
-        <div className={`flex-1 flex flex-col bg-[#171717] border border-white/5 rounded-[24px] overflow-hidden shadow-2xl transition-all duration-300 ${splitPageId ? 'hidden md:flex' : 'flex'}`}>
+        <div className={`flex-1 flex flex-col relative bg-[#171717] border border-white/5 rounded-[24px] overflow-hidden shadow-2xl transition-all duration-300 ${splitPageId ? 'hidden md:flex' : 'flex'}`}>
           {/* Topbar */}
           <div className="h-14 flex items-center justify-between px-6 shrink-0 border-b border-transparent">
             <div className="flex items-center gap-2 text-zinc-400">
@@ -4355,7 +4355,7 @@ export default function App() {
         {splitPageId && (() => {
           const splitPage = pages.find(p => p.id === splitPageId);
           return (
-            <div className="flex-1 flex flex-col bg-[#171717] border border-white/5 rounded-[24px] overflow-hidden shadow-2xl animate-in slide-in-from-right-8 duration-300 transform-gpu hidden md:flex">
+            <div className="flex-1 flex flex-col relative bg-[#171717] border border-white/5 rounded-[24px] overflow-hidden shadow-2xl animate-in slide-in-from-right-8 duration-300 transform-gpu hidden md:flex">
               {/* Topbar */}
               <div className="h-14 flex items-center justify-between px-6 shrink-0 border-b border-transparent">
                 <div className="flex items-center gap-2 text-zinc-400">
