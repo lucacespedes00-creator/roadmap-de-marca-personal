@@ -4114,12 +4114,12 @@ export default function App() {
               </div>
               {aprendizajesExpanded && (
                 <div className="flex flex-col gap-0.5">
-                  {pages.filter(p => !p.parentId && p.section !== 'tesis').length === 0 ? (
+                  {pages.filter(p => !p.parentId && p.section !== 'tesis' && p.section !== 'cleans').length === 0 ? (
                     <div className="px-3 py-1">
                       <span className="text-[13px] text-zinc-600">No boards</span>
                     </div>
                   ) : (
-                    pages.filter(p => !p.parentId && p.section !== 'tesis').map((page) => (
+                    pages.filter(p => !p.parentId && p.section !== 'tesis' && p.section !== 'cleans').map((page) => (
                       <div 
                         key={page.id}
                         onClick={() => {
@@ -4200,12 +4200,21 @@ export default function App() {
                             {page.title || 'Nueva Página'}
                           </span>
                         </div>
-                        <div 
-                          className="opacity-0 group-hover:opacity-100 p-1 hover:text-white transition-all text-zinc-500 shrink-0"
-                          onClick={(e) => deletePage(e, page.id)}
-                        >
-                          <Trash2 size={14} />
-                        </div>
+                        <div className="opacity-0 group-hover:opacity-100 flex items-center gap-1 shrink-0">
+                            <div 
+                              className="p-1 hover:text-white transition-all text-zinc-500"
+                              onClick={(e) => { e.stopPropagation(); setSplitPageId(page.id); }}
+                              title="Open in split view"
+                            >
+                              <PanelRightOpen size={14} />
+                            </div>
+                            <div 
+                              className="p-1 hover:text-[#C06C5A] transition-all text-zinc-500"
+                              onClick={(e) => deletePage(e, page.id)}
+                            >
+                              <Trash2 size={14} />
+                            </div>
+                          </div>
                       </div>
                     ))
                   )}
