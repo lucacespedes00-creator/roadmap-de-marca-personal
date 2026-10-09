@@ -14,6 +14,7 @@ import { Sales16MPage } from './Sales16MPage';
 import { SalesShowRatePage } from './SalesShowRatePage';
 import { SalesShowRateCoursePage } from './SalesShowRateCoursePage';
 import { CleansEditorPage } from './CleansEditorPage';
+import { BreakdownsDentalAgencyPage } from './BreakdownsDentalAgencyPage';
 import { 
   Home, Maximize2, ArrowLeftRight, SlidersHorizontal, LayoutGrid, Database, 
   Video, Phone, Diamond, Users, AlignLeft, 
@@ -35,7 +36,7 @@ const ArcadiaLogo = ({ className = "w-4 h-4" }) => (
 type Page = {
   id: string;
   title: string;
-  type: 'default_plan' | 'default_etapa' | 'default_contenido' | 'default_linkedin_ideas' | 'default_linkedin_content' | 'default_linkedin_parent' | 'default_linkedin_angulos' | 'default_linkedin_acquisition_parent' | 'default_linkedin_vistas' | 'default_linkedin_outbound' | 'default_linkedin_insight_parent' | 'default_linkedin_insight_summary' | 'default_linkedin_insight_gtm' | 'default_linkedin_email' | 'default_marketing_parent' | 'default_marketing_asimilacion' | 'default_tesis_acquisition' | 'default_tesis_outbound_mdr_sdr' | 'default_tesis_jeremy_ads' | 'default_tesis_keep_ads_profitable' | 'default_tesis_pixel_conditioning' | 'default_tesis_3cs' | 'default_tesis_trent_consulting' | 'default_tesis_scale_meta_ads' | 'default_ads_parent' | 'default_model_parent' | 'default_model_if100k' | 'default_sales_parent' | 'default_sales_16m' | 'default_sales_showrate' | 'default_sales_showrate_course' | 'custom' | 'clean';
+  type: 'default_plan' | 'default_etapa' | 'default_contenido' | 'default_linkedin_ideas' | 'default_linkedin_content' | 'default_linkedin_parent' | 'default_linkedin_angulos' | 'default_linkedin_acquisition_parent' | 'default_linkedin_vistas' | 'default_linkedin_outbound' | 'default_linkedin_insight_parent' | 'default_linkedin_insight_summary' | 'default_linkedin_insight_gtm' | 'default_linkedin_email' | 'default_marketing_parent' | 'default_marketing_asimilacion' | 'default_tesis_acquisition' | 'default_tesis_outbound_mdr_sdr' | 'default_tesis_jeremy_ads' | 'default_tesis_keep_ads_profitable' | 'default_tesis_pixel_conditioning' | 'default_tesis_3cs' | 'default_tesis_trent_consulting' | 'default_tesis_scale_meta_ads' | 'default_ads_parent' | 'default_model_parent' | 'default_model_if100k' | 'default_sales_parent' | 'default_sales_16m' | 'default_sales_showrate' | 'default_sales_showrate_course' | 'default_breakdowns_parent' | 'default_breakdowns_dental_agency' | 'custom' | 'clean';
   content?: string;
   parentId?: string;
   section?: 'tesis' | 'aprendizajes' | 'cleans';
@@ -58,6 +59,8 @@ const defaultPages: Page[] = [
   { id: 'sales_16m', title: '$16.000.000 en conocimiento de ventas en 36 minutos', type: 'default_sales_16m', parentId: 'sales_parent', section: 'aprendizajes' },
   { id: 'sales_showrate', title: 'Cómo arreglar tu show rate: resumen completo', type: 'default_sales_showrate', parentId: 'sales_parent', section: 'aprendizajes' },
   { id: 'sales_showrate_course', title: 'Show Rate Course', type: 'default_sales_showrate_course', parentId: 'sales_parent', section: 'aprendizajes' },
+  { id: 'breakdowns_parent', title: 'Breakdowns', type: 'default_breakdowns_parent', section: 'aprendizajes' },
+  { id: 'breakdowns_dental_agency', title: 'I Found The Pricing Leak Keeping This $246K/Month Dental Agency Stuck', type: 'default_breakdowns_dental_agency', parentId: 'breakdowns_parent', section: 'aprendizajes' },
 ];
 
 const AreaItem = ({ icon: Icon, title, desc, active, onClick, onSplit }: any) => (
@@ -300,6 +303,39 @@ const SalesParentPage = ({ setActivePageId, setSplitPageId }: { setActivePageId:
           desc="El curso completo de SalesKick sobre c�mo aumentar el show rate, documentado paso a paso." 
           onClick={() => setActivePageId('sales_showrate_course')}
          onSplit={() => setSplitPageId && setSplitPageId('sales_showrate_course')} />
+      </div>
+    </div>
+  </div>
+);
+
+const BreakdownsParentPage = ({ setActivePageId, setSplitPageId }: { setActivePageId: (id: string) => void, setSplitPageId?: (id: string) => void }) => (
+  <div className="max-w-4xl mx-auto w-full pb-20 animate-in fade-in duration-300">
+    <div className="flex items-center gap-2 text-[13px] text-zinc-500 mb-12 font-medium">
+      <ArcadiaLogo />
+      <span className="cursor-pointer hover:text-white transition-colors" onClick={() => setActivePageId('breakdowns_parent')}>Arcadia</span>
+    </div>
+    
+    <div className="flex items-center gap-4 mb-10">
+      <div className="border border-zinc-700/50 p-3 rounded-xl text-zinc-300 bg-[#1A1A1E]">
+        <BarChart size={24} strokeWidth={1.5} />
+      </div>
+      <h2 className="text-4xl font-bold text-white tracking-tight">Breakdowns</h2>
+    </div>
+    
+    <div className="border border-zinc-800/80 bg-[#121214] rounded-2xl p-6 mb-12">
+      <p className="text-[16px] text-zinc-300 leading-[1.6]">
+        Análisis en profundidad de negocios reales: números, modelos, errores y recomendaciones accionables.
+      </p>
+    </div>
+    
+    <div>
+      <div className="flex flex-col gap-3">
+        <AreaItem 
+          icon={DollarSign} 
+          title="I Found The Pricing Leak Keeping This /Month Dental Agency Stuck" 
+          desc="Análisis del negocio Tooth Traffic: fuga de precios, sobrecontratación y el camino al millón." 
+          onClick={() => setActivePageId('breakdowns_dental_agency')} 
+         onSplit={() => setSplitPageId && setSplitPageId('breakdowns_dental_agency')} />
       </div>
     </div>
   </div>
@@ -4012,6 +4048,8 @@ export default function App() {
     if (type === 'default_sales_16m') return <DollarSign size={16} />;
     if (type === 'default_sales_showrate') return <Phone size={16} />;
     if (type === 'default_sales_showrate_course') return <BarChart size={16} />;
+    if (type === 'default_breakdowns_parent') return <BarChart size={16} />;
+    if (type === 'default_breakdowns_dental_agency') return <DollarSign size={16} />;
     if (type === 'default_linkedin_insight_summary') return <PlayCircle size={16} />;
     if (type === 'default_linkedin_insight_gtm') return <BarChart size={16} />;
     if (type === 'default_linkedin_vistas') return <Magnet size={16} />;
@@ -4393,6 +4431,8 @@ export default function App() {
             {activePage?.type === 'default_sales_16m' && <Sales16MPage setActivePageId={setActivePageId} />}
             {activePage?.type === 'default_sales_showrate' && <SalesShowRatePage setActivePageId={setActivePageId} />}
               {activePage?.type === 'default_sales_showrate_course' && <SalesShowRateCoursePage setActivePageId={setActivePageId} />}
+            {activePage?.type === 'default_breakdowns_parent' && <BreakdownsParentPage setActivePageId={setActivePageId} setSplitPageId={setSplitPageId} />}
+            {activePage?.type === 'default_breakdowns_dental_agency' && <BreakdownsDentalAgencyPage setActivePageId={setActivePageId} />}
             {activePage?.type === 'default_linkedin_insight_parent' && <LinkedInInsightParentPage setActivePageId={setActivePageId} />}
             {activePage?.type === 'default_linkedin_insight_summary' && <LinkedInInsightSummaryPage setActivePageId={setActivePageId} />}
             {activePage?.type === 'default_linkedin_insight_gtm' && <LinkedInInsightGtmPage setActivePageId={setActivePageId} />}
@@ -4476,6 +4516,8 @@ export default function App() {
                 {splitPage?.type === 'default_sales_16m' && <Sales16MPage setActivePageId={setSplitPageId} />}
                 {splitPage?.type === 'default_sales_showrate' && <SalesShowRatePage setActivePageId={setSplitPageId} />}
                   {splitPage?.type === 'default_sales_showrate_course' && <SalesShowRateCoursePage setActivePageId={setSplitPageId} />}
+                {splitPage?.type === 'default_breakdowns_parent' && <BreakdownsParentPage setActivePageId={setSplitPageId} setSplitPageId={setSplitPageId} />}
+                {splitPage?.type === 'default_breakdowns_dental_agency' && <BreakdownsDentalAgencyPage setActivePageId={setSplitPageId} />}
                 {splitPage?.type === 'default_linkedin_insight_parent' && <LinkedInInsightParentPage setActivePageId={setSplitPageId} />}
                 {splitPage?.type === 'default_linkedin_insight_summary' && <LinkedInInsightSummaryPage setActivePageId={setSplitPageId} />}
                 {splitPage?.type === 'default_linkedin_insight_gtm' && <LinkedInInsightGtmPage setActivePageId={setSplitPageId} />}
