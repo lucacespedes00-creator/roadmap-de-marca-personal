@@ -23,7 +23,7 @@ import {
   Zap, Instagram, TrendingUp, CheckCircle2, ListOrdered,
   PenTool, Layers, Copy, ArrowRight, ArrowDown, Mic, Compass, 
   Volume2, BarChart, Columns, MessageCircle, FileSearch, Megaphone, UserPlus, Magnet, Link as LinkIcon, ExternalLink, LineChart
-, Mail, Calendar, Clock, AlertCircle, PlayCircle, Send, Shield, Smartphone, ArrowUpRight, Briefcase, Share2, Brain, Globe, Star, ShieldAlert, Key, MonitorPlay, CalendarDays, RefreshCcw, DollarSign } from 'lucide-react';
+, Mail, Calendar, Clock, AlertCircle, PlayCircle, Send, Shield, Smartphone, ArrowUpRight, Briefcase, Share2, Brain, Globe, Star, ShieldAlert, Key, MonitorPlay, CalendarDays, RefreshCcw, DollarSign, Youtube } from 'lucide-react';
 
 const ArcadiaLogo = ({ className = "w-4 h-4" }) => (
 
@@ -36,11 +36,12 @@ const ArcadiaLogo = ({ className = "w-4 h-4" }) => (
 type Page = {
   id: string;
   title: string;
-  type: 'default_plan' | 'default_etapa' | 'default_contenido' | 'default_linkedin_ideas' | 'default_linkedin_content' | 'default_linkedin_parent' | 'default_linkedin_angulos' | 'default_linkedin_acquisition_parent' | 'default_linkedin_vistas' | 'default_linkedin_outbound' | 'default_linkedin_insight_parent' | 'default_linkedin_insight_summary' | 'default_linkedin_insight_gtm' | 'default_linkedin_email' | 'default_marketing_parent' | 'default_marketing_asimilacion' | 'default_tesis_acquisition' | 'default_tesis_outbound_mdr_sdr' | 'default_tesis_jeremy_ads' | 'default_tesis_keep_ads_profitable' | 'default_tesis_pixel_conditioning' | 'default_tesis_3cs' | 'default_tesis_trent_consulting' | 'default_tesis_scale_meta_ads' | 'default_ads_parent' | 'default_model_parent' | 'default_model_if100k' | 'default_sales_parent' | 'default_sales_16m' | 'default_sales_showrate' | 'default_sales_showrate_course' | 'default_breakdowns_parent' | 'default_breakdowns_dental_agency' | 'custom' | 'clean';
+  type: 'default_plan' | 'default_etapa' | 'default_contenido' | 'default_linkedin_ideas' | 'default_linkedin_content' | 'default_linkedin_parent' | 'default_linkedin_angulos' | 'default_linkedin_acquisition_parent' | 'default_linkedin_vistas' | 'default_linkedin_outbound' | 'default_linkedin_insight_parent' | 'default_linkedin_insight_summary' | 'default_linkedin_insight_gtm' | 'default_linkedin_email' | 'default_marketing_parent' | 'default_marketing_asimilacion' | 'default_tesis_acquisition' | 'default_tesis_outbound_mdr_sdr' | 'default_tesis_jeremy_ads' | 'default_tesis_keep_ads_profitable' | 'default_tesis_pixel_conditioning' | 'default_tesis_3cs' | 'default_tesis_trent_consulting' | 'default_tesis_scale_meta_ads' | 'default_ads_parent' | 'default_model_parent' | 'default_model_if100k' | 'default_sales_parent' | 'default_sales_16m' | 'default_sales_showrate' | 'default_sales_showrate_course' | 'default_breakdowns_parent' | 'default_breakdowns_dental_agency' | 'custom' | 'clean' | 'youtube_summary';
   content?: string;
   parentId?: string;
   section?: 'tesis' | 'aprendizajes' | 'cleans';
   cleanBlocks?: any[];
+  youtubeLink?: string;
 };
 
 const defaultPages: Page[] = [
@@ -3839,6 +3840,110 @@ const LinkedInEmailPage = ({ setActivePageId, setSplitPageId }: { setActivePageI
   </div>
   );
 };
+
+const YouTubeBoardSection = ({ parentId, pages, addYouTubePage, setActivePageId }: { parentId: string, pages: Page[], addYouTubePage: (link: string) => void, setActivePageId: (id: string) => void }) => {
+  const [link, setLink] = React.useState('');
+  
+  const handleAdd = () => {
+    if (!link) return;
+    addYouTubePage(link);
+    setLink('');
+  };
+
+  const childPages = pages.filter(p => p.parentId === parentId && p.type === 'youtube_summary');
+
+  return (
+    <div className="max-w-4xl mx-auto w-full mt-12 animate-in fade-in duration-300 border-t border-zinc-800/80 pt-12">
+      <div className="flex items-center gap-4 mb-8">
+        <div className="border border-zinc-700/50 p-2.5 rounded-xl text-zinc-300 bg-[#1A1A1E]">
+          <Youtube size={20} strokeWidth={1.5} />
+        </div>
+        <h3 className="text-2xl font-bold text-white tracking-tight">YouTube Summaries</h3>
+      </div>
+      
+      <div className="flex gap-3 mb-8">
+        <input 
+          type="text" 
+          value={link}
+          onChange={(e) => setLink(e.target.value)}
+          placeholder="Paste YouTube link (e.g. https://youtube.com/watch?v=...)" 
+          className="flex-1 bg-[#121214] border border-zinc-800/80 rounded-xl px-4 text-[15px] text-white outline-none focus:border-zinc-600 transition-colors placeholder-zinc-600"
+        />
+        <button 
+          onClick={handleAdd}
+          className="bg-white text-black px-6 py-3 rounded-xl font-medium text-[14px] hover:bg-zinc-200 transition-colors shrink-0"
+        >
+          Add Video
+        </button>
+      </div>
+
+      {childPages.length > 0 && (
+        <div className="flex flex-col gap-3">
+          {childPages.map(p => (
+            <AreaItem 
+              key={p.id}
+              icon={Youtube} 
+              title={p.title || 'Untitled Video'} 
+              desc="AI generated video summary" 
+              onClick={() => setActivePageId(p.id)} 
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
+const YouTubeSummaryPage = ({ page, updatePage }: { page: Page, updatePage: (id: string, updates: Partial<Page>) => void }) => {
+  const getEmbedUrl = (url: string) => {
+    if (!url) return '';
+    const videoIdMatch = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([^&\n\?#]+)/);
+    if (videoIdMatch && videoIdMatch[1]) {
+      return `https://www.youtube.com/embed/${videoIdMatch[1]}`;
+    }
+    return url;
+  };
+
+  return (
+    <div className="max-w-4xl mx-auto w-full flex flex-col h-full min-h-[80vh] animate-in fade-in duration-300 pt-10">
+      <input
+        type="text"
+        value={page.title}
+        onChange={(e) => updatePage(page.id, { title: e.target.value })}
+        className="bg-transparent text-4xl font-bold text-white placeholder-zinc-700 outline-none mb-6 w-full"
+        placeholder="Video Title"
+      />
+      {page.youtubeLink && (
+        <div className="w-full aspect-video mb-8 rounded-xl overflow-hidden border border-zinc-800/80">
+          <iframe
+            width="100%"
+            height="100%"
+            src={getEmbedUrl(page.youtubeLink)}
+            title="YouTube video player"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          ></iframe>
+        </div>
+      )}
+      <div className="mb-6 flex justify-between items-center border-t border-zinc-800/80 pt-6">
+        <h3 className="text-xl font-semibold text-white flex items-center gap-2">
+          <Brain size={20} className="text-blue-500" />
+          AI Summary
+        </h3>
+        <button className="px-4 py-2 bg-blue-600/10 hover:bg-blue-600/20 text-blue-500 border border-blue-600/20 rounded-lg text-sm font-medium transition-colors">
+          Generate Summary (Connect Claude API)
+        </button>
+      </div>
+      <textarea
+        value={page.content || ''}
+        onChange={(e) => updatePage(page.id, { content: e.target.value })}
+        className="bg-transparent text-zinc-300 outline-none flex-1 resize-none text-[15px] leading-relaxed w-full placeholder-zinc-700 pb-20 custom-scrollbar"
+        placeholder="AI generated summary will appear here. You can also edit it manually..."
+      />
+    </div>
+  );
+};
 const CustomPageEditor = ({ page, updatePage }: { page: Page, updatePage: (id: string, updates: Partial<Page>) => void }) => {
   const wordCount = (page.content || '').split(/\s+/).filter(w => w.length > 0).length;
   const charCount = (page.content || '').length;
@@ -4444,6 +4549,28 @@ export default function App() {
             {activePage?.type === 'default_linkedin_email' && <LinkedInEmailPage setActivePageId={setActivePageId} />}
             {activePage?.type === 'custom' && <CustomPageEditor page={activePage} updatePage={updatePage} />}
             {activePage?.type === 'clean' && <CleansEditorPage page={activePage} updatePage={updatePage} />}
+            {activePage?.type === 'youtube_summary' && <YouTubeSummaryPage page={activePage} updatePage={updatePage} />}
+            
+            {!activePage?.parentId && activePage?.section !== 'tesis' && activePage?.section !== 'cleans' && (
+              <YouTubeBoardSection 
+                parentId={activePage.id}
+                pages={pages}
+                addYouTubePage={(link) => {
+                  const id = Date.now().toString();
+                  const newPage: Page = {
+                    id,
+                    title: 'New Video Summary',
+                    type: 'youtube_summary',
+                    parentId: activePage.id,
+                    youtubeLink: link,
+                    content: ''
+                  };
+                  setPages([...pages, newPage]);
+                  setActivePageId(id);
+                }}
+                setActivePageId={setActivePageId}
+              />
+            )}
           </div>
         </div>
 
@@ -4529,6 +4656,7 @@ export default function App() {
                 {splitPage?.type === 'default_linkedin_email' && <LinkedInEmailPage setActivePageId={setSplitPageId} />}
                 {splitPage?.type === 'custom' && <CustomPageEditor page={splitPage} updatePage={updatePage} />}
                 {splitPage?.type === 'clean' && <CleansEditorPage page={splitPage} updatePage={updatePage} />}
+                {splitPage?.type === 'youtube_summary' && <YouTubeSummaryPage page={splitPage} updatePage={updatePage} />}
               </div>
             </div>
           );
@@ -4587,4 +4715,6 @@ export default function App() {
     </div>
   );
 }
+
+
 
